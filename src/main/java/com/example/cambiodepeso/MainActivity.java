@@ -1,12 +1,12 @@
 package com.example.cambiodepeso;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         peso = (EditText)findViewById(R.id.numPeso);
 
     }
+  
     public void noNumber(){
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(this, "Escibe un número", duration);
@@ -67,4 +68,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void urano(View view){
+       double peso_double=getPeso(peso.getText().toString());
+        if(peso_double!=0){
+            Intent urano= new Intent(this, Urano.class);
+            saturno.putExtra("peso", peso_double);
+            startActivity(urano);
+        }else{
+            noNumber();
+        }
 }
