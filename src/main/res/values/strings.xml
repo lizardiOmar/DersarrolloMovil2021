@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CambioDePeso</string>
+    <string name="txtPeso">Peso</string>
+    <string name="txtConvierte">Calcular peso en:</string>
+    <string name="btnLuna">Luna</string>
+    <string name="txtPesoLuna">Tu peso en la Luna es:</string>
+    <string name="btnJupiter">Jupiter</string>
+    <string name="txtPesoJupiter">Tu peso en Jupiter es:</string>
+    <string name="btnSaturno">Saturno</string>
+    <string name="txtPesoSaturno">Tu peso en Saturno es:</string>
+    <string name="btnRegresa">Regresar</string>
+</resources>
