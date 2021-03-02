@@ -13,7 +13,7 @@ public class Marte extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_Marte);
+        setContentView(R.layout.activity_marte);
         txtCalcPeso= (TextView)findViewById(R.id.txtCalcPeso);
         Bundle extras = getIntent().getExtras();
         double numero = extras.getDouble("peso");

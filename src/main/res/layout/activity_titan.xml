@@ -4,40 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Luna">
+    tools:context=".Titan">
 
     <TextView
-        android:id="@+id/txtLuna"
+
+        android:id="@+id/txtTitan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="@string/btnLuna"
+        android:text="@string/titleTitan"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/titleTitan" />
 
     <ImageView
-        android:id="@+id/imgJupiter"
+        android:id="@+id/imgTitan"
         android:layout_width="237dp"
         android:layout_height="200dp"
         android:layout_marginTop="52dp"
+        android:contentDescription="@string/titan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtJupiter"
-        app:srcCompat="@mipmap/luna" />
-
+        app:layout_constraintTop_toBottomOf="@+id/txtTitan"
+        app:srcCompat="@mipmap/titan" />
     <TextView
-        android:id="@+id/txtPesoJupiter"
+        android:id="@+id/txtPesoTitan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
-        android:text="@string/txtPesoLuna"
+        android:text="@string/tu_peso_en_titan_es"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgJupiter" />
-
+        app:layout_constraintTop_toBottomOf="@+id/imgTitan" />
     <TextView
         android:id="@+id/txtCalcPeso"
         android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPesoJupiter" />
+        app:layout_constraintTop_toBottomOf="@+id/txtPesoTitan" />
 
     <Button
         android:id="@+id/btnRegresa"

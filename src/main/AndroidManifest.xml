@@ -12,6 +12,8 @@
         <activity android:name=".Saturno"></activity>
         <activity android:name=".Jupiter" />
         <activity android:name=".Luna" />
+        <activity android:name=".Titan" />
+        <activity android:name=".Marte"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
