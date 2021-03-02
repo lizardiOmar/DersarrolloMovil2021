@@ -77,4 +77,15 @@ public class MainActivity extends AppCompatActivity {
         }else{
             noNumber();
         }
+    }
+    public void marte(View view){
+        double peso_double=getPeso(peso.getText().toString());
+        if(peso_double!=0){
+            Intent marte= new Intent(this, Marte.class);
+            marte.putExtra("peso", peso_double);
+            startActivity(marte);
+        }else{
+            noNumber();
+        }
+    }
 }
