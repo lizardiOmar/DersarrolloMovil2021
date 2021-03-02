@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
        double peso_double=getPeso(peso.getText().toString());
         if(peso_double!=0){
             Intent urano= new Intent(this, Urano.class);
-            saturno.putExtra("peso", peso_double);
+            urano.putExtra("peso", peso_double);
             startActivity(urano);
         }else{
             noNumber();
