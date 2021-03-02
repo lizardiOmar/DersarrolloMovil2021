@@ -18,43 +18,53 @@ public class MainActivity extends AppCompatActivity {
         peso = (EditText)findViewById(R.id.numPeso);
 
     }
+    public void noNumber(){
+        int duration = Toast.LENGTH_LONG;
+        Toast toast = Toast.makeText(this, "Escibe un número", duration);
+        toast.show();
+    }
     public double getPeso(String peso){
-        double peso1=0.0;
+        double peso1;
         try{
-            peso1= Integer.parseInt(peso);
+            peso1= Double.parseDouble(peso);
         }catch(Exception ex){
-            return 0.0;
-        }finally{
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(this, "Escibe un número", duration);
-            toast.show();
+            peso1=0.0;
+            return peso1;
         }
         return peso1;
     }
+
     public void luna(View view){
         double peso_double=getPeso(peso.getText().toString());
-
-        Intent luna= new Intent(this, Luna.class);
-        luna.putExtra("peso", peso_double);
-        startActivity(luna);
+        if(peso_double!=0){
+            Intent luna= new Intent(this, Luna.class);
+            luna.putExtra("peso", peso_double);
+            startActivity(luna);
+        }else{
+            noNumber();
+        }
     }
 
     public void jupiter(View view){
-        String valorPeso = peso.getText().toString();
-        double peso1= Integer.parseInt(valorPeso);
-
-        Intent luna= new Intent(this, Jupiter.class);
-        luna.putExtra("peso", peso1);
-        startActivity(luna);
+        double peso_double=getPeso(peso.getText().toString());
+        if(peso_double!=0){
+            Intent jupiter= new Intent(this, Jupiter.class);
+            jupiter.putExtra("peso", peso_double);
+            startActivity(jupiter);
+        }else{
+            noNumber();
+        }
     }
 
     public void saturno(View view){
-        String valorPeso = peso.getText().toString();
-        double peso1= Integer.parseInt(valorPeso);
-
-        Intent luna= new Intent(this, Saturno.class);
-        luna.putExtra("peso", peso1);
-        startActivity(luna);
+        double peso_double=getPeso(peso.getText().toString());
+        if(peso_double!=0){
+            Intent saturno= new Intent(this, Saturno.class);
+            saturno.putExtra("peso", peso_double);
+            startActivity(saturno);
+        }else{
+            noNumber();
+        }
     }
 
 }
