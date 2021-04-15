@@ -5,8 +5,8 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.example.basket"
-        minSdkVersion 19
+        applicationId "com.example.androidbuybasket"
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -29,6 +29,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.github.shrikanth7698:Custom-Navigation-Drawer:v0.0.1'
+    implementation 'com.android.volley:volley:1.1.1'
 
 }

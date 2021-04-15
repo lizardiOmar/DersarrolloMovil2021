@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Basket</string>
+    <string name="app_name">Android B-basket</string>
+    <string name="linkAcceso">¿Tienes una cuenta? Accede aquí.</string>
+    <string name="tituloMain">Registrate en B-basket</string>
+    <string name="btnRegistro">CREAR CUENTA</string>
+    <string name="nombre_hint">Nombre (s)</string>
+    <string name="apellidoHint">Apellido (s)</string>
+    <string name="correo_hint">Correo electrónico</string>
+    <string name="edad_hint">Edad</string>
+    <string name="contrasena_hint">Contraseña</string>
+    <string name="titleLogin">Accede a B-basket</string>
+    <string name="acceder_btn">ACCEDER</string>
+    <string name="link_registro">¿No tienes una cuenta? Crea una aqui.</string>
 </resources>
