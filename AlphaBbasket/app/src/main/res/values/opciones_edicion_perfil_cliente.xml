@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cliente_datos_editables">
+        <item>Nombres</item>
+        <item>Apellidos</item>
+        <item>Edad</item>
+        <item>Clave</item>
+    </string-array>
+</resources>

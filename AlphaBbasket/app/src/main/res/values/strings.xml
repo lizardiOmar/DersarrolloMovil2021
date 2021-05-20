@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Alpha Bbasket</string>
+    <string name="textViewTituloRegistro">Crea una cuenta en B-basket</string>
+    <string name="hint_nombre">Nombre(s)</string>
+    <string name="hint_dia">dd</string>
+    <string name="hint_Apellidos">Apellido(s)</string>
+    <string name="hint_correo">Correo electrónico</string>
+    <string name="hint_mes">mm</string>
+    <string name="hint_año">AAAA</string>
+    <string name="hint_contraseña">Contraseña</string>
+    <string name="hint_terminos">He leído y acepto los terminos y condiciones de uso de cuenta en B-basket.</string>
+    <string name="labelButtonRegistro">REGISTRAR</string>
+    <string name="hint_sesion">Mantener la sesión en este dispositivo.</string>
+    <string name="labelButtonAcceso">ACCEDER</string>
+    <string name="textViewTituloAcceso">Accede a tu cuenta de B-basket</string>
+    <string name="title_activity_login">Login</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_maps">Map</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
