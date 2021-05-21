@@ -44,25 +44,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditarPerfilActivity extends AppCompatActivity implements
-        OnMapReadyCallback,
-        AdapterView.OnItemSelectedListener {
+        OnMapReadyCallback{
     private LocationManager locManager;
     private LocationListener locListener;
     private Location location;
-    private EditText editTextCambiarDato;
-    private Button buttonGPS, buttonCancelar, buttonEliminarCuenta, buttonGuardarCambios;
+    private Button buttonGPS, buttonCancelar, buttonEliminarCuenta;
     private Boolean flag = false;
     private String latitud, longitud, altura;
     private Fragment map;
     private Direccion direccion;
     private Cliente cliente;
     private Context c=this;
-    private Spinner spinnerDatosCliente;
     private LatLng latLng;
     private Box box=new Box();
-    private int aux=0;
-    private String datoNuevo="";
-    private final String[] datos = { "...", "Nombres", "Apellidos", "Edad"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +171,7 @@ public class EditarPerfilActivity extends AppCompatActivity implements
 
             }
         });
-        spinnerDatosCliente.setOnItemSelectedListener(this);
+
     }
 
 
@@ -214,18 +210,17 @@ public class EditarPerfilActivity extends AppCompatActivity implements
         String clave = extras.getString("clave");
 
         cliente=new Cliente(id, nombres, apellidos, correo, clave, edad);
-        buttonGuardarCambios=(Button)findViewById(R.id.buttonGuardarCambio);
-        editTextCambiarDato=(EditText)findViewById(R.id.editTextDatoEditable);
+
         this.buttonCancelar = (Button) findViewById(R.id.buttonCancelar);
         this.buttonGPS = (Button) findViewById(R.id.buttonGPSBuscar);
         this.buttonEliminarCuenta = (Button) findViewById(R.id.buttonEliminar);
 
-        this.spinnerDatosCliente = (Spinner) findViewById(R.id.spinnerDatosCliente);
 
 
-        CustomSpinnerAdapter customAdapter=new CustomSpinnerAdapter(getApplicationContext(),datos);
+
+
         // Create an ArrayAdapter using the string array and a default spinner layout
-        spinnerDatosCliente.setAdapter(customAdapter);
+
         mapaDisponible();
 
     }
@@ -268,136 +263,4 @@ public class EditarPerfilActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
-
-        //Si el editTextCambiarDato no está vacío
-        if(!editTextCambiarDato.getText().toString().equals("")){
-            //se asigna el indice de la selección a una variable final interna
-            final int x=i;
-            //Se crea una ventana de alerta en una implementación interna (c=context)
-            AlertDialog.Builder builder = new AlertDialog.Builder(c);
-            //Setters de la ventana (titulo, icono)
-            builder.setTitle("Descartar cambios");
-            builder.setIcon(R.drawable.editar_logo_small_30);
-            builder.setMessage("¿deseas descartar los cambios en ("+ datos[aux]+" "+editTextCambiarDato.getText().toString().trim()+")?");
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                //Botón aceptar descartar la información
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //la variable dato nuevo se iguala con nada
-                    datoNuevo="";
-                    //se asigna ese valor al editTextCambiarDato
-                    editTextCambiarDato.setText("");
-                    //Se asigna al adaptador la selección mas reciente
-                    adapterView.setSelection(x);
-                    switch (x){
-                        //Si el item corresponde al 0, no se habilita ninguna opción de edición
-                        case 0:
-                            editTextCambiarDato.setEnabled(false);
-                            buttonGuardarCambios.setVisibility(View.INVISIBLE);
-                            editTextCambiarDato.setHint("Selecciona una opción");
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 1, se habilita la opción de edición de nombres
-                        case 1:
-                            buttonGuardarCambios.setText("Cambiar mis nombres");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getNombres());
-                            editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 2, se habilita la opción de edición de apellidos
-                        case 2:
-                            buttonGuardarCambios.setText("Cambiar mis apellidos");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getApellidos());
-                            editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 3, se habilita la opción de edición de edad
-                        case 3:
-                            buttonGuardarCambios.setText("Cambiar mi edad");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getEdad());
-                            editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                    }
-                }
-            });
-            //Botón para no descartar la información
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Sé le asigna a la variable datoNuevo el valor del contenido del editTextCambioDato
-                    datoNuevo=editTextCambiarDato.getText().toString().trim();
-                    //Sé vacía la variable datoNuevo
-                    editTextCambiarDato.setText("");
-                    //Se asigna al adaptador la selección del dato que se está editando
-                    adapterView.setSelection(aux);
-                    dialog.cancel();
-                }
-            });
-            AlertDialog dialog = builder.create();
-
-            dialog.show();
-        //Sí el editTextDatoEditable está vacío
-        }else{
-            //Si la variable 'datoNuevo' no está vacía
-            if(!datoNuevo.equals("")){
-                //Se coloca su valor dentro del editTextCambiarDato
-                editTextCambiarDato.setText(datoNuevo);
-                //Y sé vacía la variable
-                datoNuevo="";
-                //Si la variable 'datoNuevo' sí está vacía
-            }else{
-                switch (i){
-                    //Si el item corresponde al 0, no se habilita ninguna opción de edición
-                    case 0:
-                        editTextCambiarDato.setEnabled(false);
-                        buttonGuardarCambios.setVisibility(View.INVISIBLE);
-                        editTextCambiarDato.setHint("Selecciona una opción");
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 1, se habilita la opción de edición de nombres
-                    case 1:
-                        buttonGuardarCambios.setText("Cambiar mis nombres");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getNombres());
-                        editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 2, se habilita la opción de edición de apellidos
-                    case 2:
-                        buttonGuardarCambios.setText("Cambiar mis apellidos");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getApellidos());
-                        editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 3, se habilita la opción de edición de edad
-                    case 3:
-                        buttonGuardarCambios.setText("Cambiar mi edad");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getEdad());
-                        editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                }
-            }
-        }
-    }
-
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

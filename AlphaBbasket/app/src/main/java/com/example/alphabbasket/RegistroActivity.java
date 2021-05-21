@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alphabbasket.dao.ClienteDAO;
 import com.example.alphabbasket.model.Cliente;
 import com.example.alphabbasket.model.Constantes;
 import com.example.alphabbasket.tools.Box;
@@ -149,45 +150,12 @@ public class RegistroActivity extends AppCompatActivity {
                 if(flag){
                     String contraseñaEncriptada=box.encriptarPass(editTextContraseñaConfirmacion);
                     clienteNuevo=new Cliente("0", nombres, apellidos, correo, edad, contraseñaEncriptada);
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String ServerResponse) {
-                                    // Showing response message coming from server.
-                                    editTextNombres.setText("");
-                                    editTextApellidos.setText("");
-                                    editTextCorreoRegistro.setText("");
-                                    editTextEdad.setText("");
-                                    editTextContraseñaRegistro.setText("");
-                                    editTextContraseñaConfirmacion.setText("");
-                                    Toast.makeText(RegistroActivity.this, ServerResponse, Toast.LENGTH_LONG).show();
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-                                    // Showing error message if something goes wrong.
-                                    textViewFrase.setText(volleyError.getLocalizedMessage());
-                                }
-                            }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            // Creating Map String Params.
-                            Map<String, String> params = new HashMap<String, String>();
-                            // Adding All values to Params.
-                            params.put("id", clienteNuevo.getId());
-                            params.put("nombres", clienteNuevo.getNombres());
-                            params.put("apellidos", clienteNuevo.getApellidos());
-                            params.put("correo", clienteNuevo.getCorreo());
-                            params.put("edad", clienteNuevo.getEdad());
-                            params.put("clave", clienteNuevo.getContrasena());
-                            return params;
-                        }
-                    };
-                    // Creating RequestQueue.
-                    RequestQueue requestQueue = Volley.newRequestQueue(RegistroActivity.this);
-                    // Adding the StringRequest object into requestQueue.
-                    requestQueue.add(stringRequest);
+                    ClienteDAO registrar=new ClienteDAO();
+                    if(registrar.registrarCliente(clienteNuevo, RegistroActivity.this)){
+                        textViewFrase.setText("Cuenta Registrada");
+                    }else{
+                        textViewFrase.setText("Error inesperado");
+                    }
                 }
             }
 
