@@ -19,7 +19,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class Box {
     //Clase interna que encripta/desencripta las contraseñas y las envía así al servidor
-    private final Encriptador encriptador=new Encriptador();
+    private Encriptador encriptador=new Encriptador();
     public Boolean editTextEmpty(EditText textView){
         Boolean result=false;
         String text = textView.getText().toString().trim();
@@ -93,30 +93,17 @@ public class Box {
             }
         return pass;
     }
-    //Encriptar contraseña válida
-    public Boolean evaluarPass(EditText textView, String response){
+    public Boolean evaluarPass(String contraseña, String response){
         Boolean aux=false;
         try {
             String passD = encriptador.desencriptar(response, Constantes.claveEncriptacion);
-            if(validarPass(textView)){
-                if(passD.equals(textView.getText().toString().trim())){
-                    aux=true;
-                }else{
-                    textView.setError("Verifica la contraseña");
-                    textView.setText("");
-                }
+            if(passD.equals(contraseña)){
+                aux=true;
+
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
+
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
         return aux;

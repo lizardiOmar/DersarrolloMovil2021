@@ -22,8 +22,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alphabbasket.dao.ClienteDAO;
+import com.example.alphabbasket.model.Cliente;
 import com.example.alphabbasket.model.Constantes;
 import com.example.alphabbasket.tools.Box;
+import com.example.alphabbasket.tools.Encriptador;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,24 +35,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private TextView textViewTitulo, textViewFrase, textViewSinCuenta;
+    private TextView  textViewFrase;
     private EditText editTextCorreo, editTextContraseña;
     private Button buttonAcceder, buttonRegistrar;
     private Animation animationMoveRight;
-    private final Box box=new Box();
+    private Box box=new Box();
+    private ClienteDAO clienteDAO;
     private String correo, contraseña;
-    // creating constant keys for shared preferences.
-    public static final String SHARED_PREFS = "shared_prefs";
 
-    // key for storing email.
-    public static final String EMAIL_KEY = "email_key";
 
-    // key for storing password.
-    public static final String PASSWORD_KEY = "password_key";
 
-    // variable for shared preferences.
-    SharedPreferences bbasketSharedPreferences;
-    String preferencesCorreo, preferencesClave;
+
+    private Cliente cliente;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,35 +70,34 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Boolean flag=validarFormulario();
-                if(flag){
-                    correo = editTextCorreo.getText().toString().trim();
-                    RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+
+                if(validarFormulario()) {
+                    correo=editTextCorreo.getText().toString().trim();
+                    contraseña=editTextContraseña.getText().toString().trim();
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.localGetPassCliente,
                             new Response.Listener<String>() {
                                 @RequiresApi(api = Build.VERSION_CODES.O)
                                 @Override
                                 public void onResponse(String response) {
+                                    String passC="";
                                     try {
                                         JSONObject jsonResponse = new JSONObject(response);
                                         String datos=jsonResponse.getString("datos");
                                         JSONObject jsonDatos = new JSONObject(datos);
-                                        String passC=jsonDatos.getString("contrasena");
-                                        Boolean loginBool=box.evaluarPass(editTextContraseña, passC);
-                                        if (loginBool){
-                                            //Toast.makeText(LoginActivity.this, "Sesión Iniciada", Toast.LENGTH_LONG).show();
+                                        passC=jsonDatos.getString("contrasena");
+                                        if(box.evaluarPass(contraseña, passC)){
                                             Intent i = new Intent(getApplicationContext(), MainActivity.class );
                                             i.putExtra("correo", correo);
                                             startActivity(i);
                                             finish();
                                         }else{
-                                            Toast.makeText(LoginActivity.this, "Verifica la contraseña.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(LoginActivity.this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (JSONException ex) {
-                                        editTextCorreo.setError("Verifica tu correo.");
-                                        editTextCorreo.setText("");
-                                        Toast.makeText(LoginActivity.this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                     }
+
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -117,22 +114,22 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     };
                     queue.add(stringRequest);
-                }else{
 
+                }else{
+                    Toast.makeText(LoginActivity.this, "Revise los datos.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
     private void iniciarComponentes() {
-
+        Context context=getApplicationContext();
+        clienteDAO=new ClienteDAO(context);
         animationMoveRight = AnimationUtils.loadAnimation(this, R.anim.move_right);
 
-        textViewTitulo = (TextView) findViewById(R.id.textViewBbasket);
 
         textViewFrase = (TextView) findViewById(R.id.textViewLema);
 
-        textViewSinCuenta = (TextView) findViewById(R.id.textViewSinCuenta);
 
         editTextCorreo = (EditText) findViewById(R.id.editTextCorreoLogin);
 
@@ -143,16 +140,9 @@ public class LoginActivity extends AppCompatActivity {
         buttonRegistrar= (Button) findViewById(R.id.buttonNavegacionRegistro);
 
 
-        bbasketSharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
-        // in shared prefs inside het string method
-        // we are passing key value as EMAIL_KEY and
-        // default value is
-        // set to null if not present.
-        preferencesCorreo = bbasketSharedPreferences.getString(EMAIL_KEY, null);
-        preferencesClave = bbasketSharedPreferences.getString(PASSWORD_KEY, null);
 
-        animationMoveRight = AnimationUtils.loadAnimation(this, R.anim.move_right);
+        animationMoveRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_right);
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -172,6 +162,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         animationMoveRight.setAnimationListener(animationListener);
+
     }
     private Boolean validarFormulario() {
         Boolean aux = false;
@@ -186,5 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         return aux;
     }
+
+
 
 }

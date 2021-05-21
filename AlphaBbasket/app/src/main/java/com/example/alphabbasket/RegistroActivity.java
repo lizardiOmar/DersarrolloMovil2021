@@ -3,6 +3,7 @@ package com.example.alphabbasket;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -51,8 +52,9 @@ public class RegistroActivity extends AppCompatActivity {
     private Boolean flag;
     //Clase interna que contiene diversas herramientas para verificar campos
     private Animation animationMoveRight;
-    private Tiempo tiempo = new Tiempo();
-    private final Box box = new Box();
+    private Box box = new Box();
+    private Context context;
+    private ClienteDAO clienteDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +85,8 @@ public class RegistroActivity extends AppCompatActivity {
 
     }
     private void iniciarComponentes(){
+        context=getApplicationContext();
+        clienteDAO=new ClienteDAO(context);
         editTextNombres= this.findViewById(R.id.editTextNombres);
         editTextApellidos=this.findViewById(R.id.editTextApellidos);
         editTextCorreoRegistro=this.findViewById(R.id.editTextCorreoRegistro);
@@ -150,8 +154,8 @@ public class RegistroActivity extends AppCompatActivity {
                 if(flag){
                     String contraseñaEncriptada=box.encriptarPass(editTextContraseñaConfirmacion);
                     clienteNuevo=new Cliente("0", nombres, apellidos, correo, edad, contraseñaEncriptada);
-                    ClienteDAO registrar=new ClienteDAO();
-                    if(registrar.registrarCliente(clienteNuevo, RegistroActivity.this)){
+
+                    if(clienteDAO.registrarCliente(clienteNuevo)){
                         textViewFrase.setText("Cuenta Registrada");
                     }else{
                         textViewFrase.setText("Error inesperado");

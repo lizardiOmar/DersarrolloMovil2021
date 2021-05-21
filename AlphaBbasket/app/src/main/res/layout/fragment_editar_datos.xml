@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentos.EditarDatosFragment">
+    <LinearLayout
+        android:id="@+id/linearLayoutFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F9A825"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F9A825"
+            android:padding="30sp"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/textViewLema"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F8F9A825"
+                android:backgroundTint="#D37A03"
+                android:fadingEdge="horizontal|vertical"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:padding="4sp"
+                android:shadowColor="#283593"
+                android:shadowDx="15"
+                android:shadowRadius="5"
+                android:text="Editar datos de usuario"
+                android:textSize="28sp"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                android:id="@+id/Instrucción"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#F8F9A825"
+                android:backgroundTint="#D37A03"
+                android:fadingEdge="horizontal|vertical"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:padding="4sp"
+                android:shadowColor="#283593"
+                android:shadowDx="15"
+                android:shadowRadius="5"
+                android:text="Elige una opción del seleccionador naranja. Cuando los cambios esten listos, presiona el botón de abajo."
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="#F9A825"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="4sp"
+                    android:shadowDx="15"
+                    android:shadowRadius="5"
+                    android:text="Editar "
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:shadowColor="#283593"
+                    android:background="#FF8F00"
+                    android:fadingEdge="horizontal|vertical"
+                    android:fadingEdgeLength="10sp"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5sp"
+                    android:background="#FF8F00"
+                    android:src="@drawable/editar_logo_small_30_off" />
+                <Spinner
+                    android:id="@+id/spinnerDatosCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#D84315"
+                    android:shadowColor="#283593"
+                    android:shadowDx="15"
+                    android:shadowRadius="5"
+                    android:textAlignment="gravity"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editTextDatoEditable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F3EEE7"
+                android:ems="10"
+                android:padding="20sp"
+                android:gravity="center"
+                android:fadingEdge="vertical"
+                android:fadingEdgeLength="30sp"
+                android:fontFamily="monospace"
+                android:foregroundTint="#F9A825"
+                android:paddingTop="10sp"
+                android:selectAllOnFocus="true"
+                android:shadowColor="#512DA8"
+                android:shadowDx="15"
+                android:shadowRadius="5"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#F7EBEBEC"
+                android:textSize="18sp"
+                android:tooltipText='"Escribe el nuevo dato.'/>
+            <Button
+                android:id="@+id/buttonGuardarCambio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn"
+                android:fontFamily="monospace"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:shadowColor="#283593"
+                android:shadowDx="15"
+                android:shadowRadius="5"
+                android:fadingEdge="horizontal|vertical"
+                android:fadingEdgeLength="10sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</FrameLayout>

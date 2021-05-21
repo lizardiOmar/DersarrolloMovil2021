@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                     jsonCliente.getString("correo"),
                                     jsonCliente.getString("clave"),
                                     jsonCliente.getString("edad"));
-                            Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
                         } catch (JSONException ex) {
                             Toast.makeText(MainActivity.this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             c=null;
@@ -166,9 +166,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             }
         }
     }
-    private void loadFragment(Fragment fragment) {
 
-    }
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
