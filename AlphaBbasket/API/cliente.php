@@ -110,7 +110,7 @@
 			try {
 				$conn->getConexion()->exec($sql);
 				
-				if ($conn->query($sql) == TRUE) {
+				if ($conn->getConexion()->query($sql) == TRUE) {
 					$response = array(
 						"estado"=>"TRUE",
 						"MENSAJE"=>"Cuenta eliminada"
