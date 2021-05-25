@@ -27,7 +27,7 @@
 		//Actualizar cliente UPDATE
 		case 'PUT':
 			if (isset($_POST['id'])&&isset($_POST['dato'])&&isset($_POST['index_columna'])) {
-				Cliente::actualizarCliente($_POST['index_columna'], $_POST['dato'], $_POST['id']);
+				Cliente::actualizarCliente($_POST['id'], $_POST['dato'], $_POST['index_columna']);
 			}
 		break;
 		//Eliminar cliente DELETE
