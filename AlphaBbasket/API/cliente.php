@@ -50,9 +50,6 @@
 			}
 		}
 		public function guardarCliente(){
-			
-			//$conn->getConexion();
-			
 			$response = null;			
 			try {	
 				$sql = "INSERT INTO cliente (id, nombres, apellidos, correo, edad, clave, fecha_alta)
@@ -72,35 +69,26 @@
 			}
 			$conn = null;
 			echo json_encode($response);
-				/*if ( !file_exists("clientes_ejemplo.json") ) {
-					throw new Exception('File not found.');
-				}	
-				$archivo_json=file_get_contents("clientes_ejemplo.json");
-				$clientes=null;
-				$clientes=json_decode($archivo_json, true);
-				$clientes[]=array(
-					"id"=>getId(),
-					"nombres"=>$this->nombres,
-					"apellidos"=>$this->apellidos,
-					"correo"=>$this->correo ,
-					"edad"=>$this->edad,
-					"clave"=>$this->clave
-				);
-				
-				$archivo=fopen("clientes_ejemplo.json", "w");
-				if ( !$archivo ) {
-					throw new Exception('File open failed.');
-				}  
-				fwrite($archivo, json_encode($clientes));
-				fclose($archivo);
-				*/
-				
-		 
-			
 		}
 		
-		public function actualizarCliente(){
-				
+		public static function actualizarCliente($id, $dato, $index_columna){
+			
+			$datos = array('nombres', 'apellidos', 'edad', 'correo', 'clave');
+			
+			$sql="UPDATE cliente SET $datos[$index_columna] = '$dato' WHERE id = '$id';";
+			try {	
+				$conn=new Conexion();
+				$conn->getConexion()->exec($sql);
+				echo "Dato ($datos[$index_columna]) actualizado.";
+			} catch(PDOException $e){
+				$response = array(
+					"SERVICIO"=>"DESCONECTADO",
+					"ESTADO"=>"NO CREADO",
+					"ERROR"=>$e
+				);
+			}
+			
+			
 		}
 		
 		public static function borrarCliente($correo){
