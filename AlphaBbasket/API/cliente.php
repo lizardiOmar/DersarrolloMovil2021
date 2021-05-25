@@ -1,5 +1,8 @@
 <?php
+	require_once 'conexion.php';
 	class cliente{
+		
+		
 		var $id;
 		var $nombres;
 		var $apellidos;
@@ -13,8 +16,7 @@
 			$this->apellidos 	= $apellidos;
 			$this->correo 		= $correo;
 			$this->edad			= $edad;
-			$this->clave		= $clave; 
-			 
+			$this->clave		= $clave; 	
 		}
 		//CRUD
 		public function getId(){
@@ -47,12 +49,29 @@
 				return $this->edad;
 			}
 		}
-		public function getConexion(){
-			return $this->conexion;
-		}
-	
 		public function guardarCliente(){
 			
+			//$conn->getConexion();
+			
+			$response = null;			
+			try {	
+				$sql = "INSERT INTO cliente (id, nombres, apellidos, correo, edad, clave, fecha_alta)
+				VALUES ($this->id, '$this->nombres', '$this->apellidos', '$this->correo', $this->edad, '$this->clave', CURRENT_TIMESTAMP())";
+				$conn=new Conexion();
+				$conn->getConexion()->exec($sql);
+				$response = array(
+					"SERVICIO"=>"CONECTADO",
+					"ESTADO"=>"CREADO"
+				);
+			} catch(PDOException $e) {
+				$response = array(
+					"SERVICIO"=>"DESCONECTADO",
+					"ESTADO"=>"NO CREADO",
+					"ERROR"=>$e
+				);
+			}
+			$conn = null;
+			echo json_encode($response);
 				/*if ( !file_exists("clientes_ejemplo.json") ) {
 					throw new Exception('File not found.');
 				}	

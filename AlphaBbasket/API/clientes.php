@@ -74,12 +74,11 @@
 			echo json_encode($response);
 		}
 	}else{
-		$response = array(
-				"estado"=>"CORREO_NULO",
-				"cliente"=>"NULL"
-			);
-			echo json_encode($response);
-	}
+		
+		$cliente =  new Cliente("90", "Omar", "Alonso", "correo_electronico", "edad", "clave");
+		$cliente->guardarCliente();
+		
+	}	
 		break;
 		//Actualizar cliente UPDATE
 		case 'PUT':
