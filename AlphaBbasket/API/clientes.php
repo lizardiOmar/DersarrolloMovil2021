@@ -1,5 +1,4 @@
 <?php
-	//http://localhost/API/clientes.php
 	include 'conexion.php';
 	include 'cliente.php';
 	//echo "El metodo utilizado es: " . $_SERVER['REQUEST_METHOD'];
@@ -20,8 +19,7 @@
 		//Leer clientes o cliente GET
 		case 'GET':
 			if (isset($_GET['correo'])) {
-				$correo = $_GET['correo'];
-				Cliente::mostrarCliente('$correo');
+				Cliente::mostrarCliente( $_GET['correo']);
 			}
 		break;
 		//Actualizar cliente UPDATE

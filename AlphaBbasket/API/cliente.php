@@ -18,6 +18,7 @@
 			$this->edad			= $edad;
 			$this->clave		= $clave; 	
 		}
+		
 		//CRUD
 		public function getId(){
 			if(isset($this->id)){
@@ -49,6 +50,7 @@
 				return $this->edad;
 			}
 		}
+		
 		public function guardarCliente(){
 			$response = null;			
 			try {	
@@ -70,11 +72,9 @@
 			$conn = null;
 			echo json_encode($response);
 		}
-		
+	
 		public static function actualizarCliente($id, $dato, $index_columna){
-			
 			$datos = array('nombres', 'apellidos', 'edad', 'correo', 'clave');
-			
 			$sql="UPDATE cliente SET $datos[$index_columna] = '$dato' WHERE id = '$id';";
 			try {	
 				$conn=new Conexion();
@@ -87,8 +87,6 @@
 					"ERROR"=>$e
 				);
 			}
-			
-			
 		}
 		
 		public static function borrarCliente($correo){
@@ -116,7 +114,7 @@
 				);
 			}
 			$conn=null;
-			echo json_encode($response);
+			return json_encode($response);
 		}
 		
 		public static function mostrarCliente($correo){
@@ -127,25 +125,17 @@
 				$stmt = $conn->getConexion()->query($sql);
 				$result = $stmt->setFetchMode(PDO::FETCH_NUM);
 				while ($row = $stmt->fetch()) {
-					$id = $row[0];
-					$nombres = $row[1];
-					$apellidos = $row[2];
-					$correo = $row[3];
-					$edad = $row[4];
-					$clave = $row[5];
+					$cliente =  new Cliente($row[0], $row[1], $row[2], $row[3],  $row[4], $row[5]);
 				}
-				$cliente =  new Cliente("$id", "$nombres", "$apellidos", "$correo", "$edad", "$clave");
-				$response = array(
-					"cliente"=>$cliente
-				);
-				echo json_encode($response);
+				echo json_encode($cliente);
+				return json_encode($cliente);
 			} catch (PDOException $e) {
 				$response = null;
 				$response = array(
 					"estado"=>"FALLIDO",
 					"cliente"=>"NULL"
 				);
-				echo json_encode($response);
+				return json_encode($response);
 			}
 		}
 	}
