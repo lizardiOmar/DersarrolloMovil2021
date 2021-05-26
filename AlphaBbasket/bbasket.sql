@@ -28,14 +28,17 @@ DROP TRIGGER IF EXISTS `bbasket`.`cliente_BEFORE_DELETE`;
 
 DELIMITER $$
 USE `bbasket`$$
-CREATE TRIGGER `bbasket`.`cliente_BEFORE_DELETE`
+CREATE DEFINER=`root`@`localhost` TRIGGER `bbasket`.`cliente_BEFORE_DELETE`
 BEFORE DELETE
 ON `cliente` FOR EACH ROW
 BEGIN
     INSERT INTO cliente_delete(id,nombres,apellidos, correo, edad, clave, fecha_alta, fecha_baja)
     VALUES(OLD.id,OLD.nombres,OLD.apellidos, OLD.correo, OLD.edad, OLD.clave, OLD.fecha_alta, SYSDATE());
+    DELETE FROM `bbasket`.`direccion`
+	WHERE OLD.correo=direccion.correo;
 END$$
 DELIMITER ;
+
 /**/
 CREATE TABLE `direccion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
