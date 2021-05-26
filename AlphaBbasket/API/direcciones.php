@@ -1,6 +1,6 @@
 <?php
 	//http://localhost/API/clientes.php
-	include 'conexion.php';
+	//sinclude 'conexion.php';
 	include 'direccion.php';
 	//echo "El metodo utilizado es: " . $_SERVER['REQUEST_METHOD'];
 	switch ($_SERVER['REQUEST_METHOD']) {
@@ -12,7 +12,9 @@
 			isset($_POST['longitud']) &&
 			isset($_POST['altura']) &&
 			isset($_POST['correo']) ){
-				$direccion =  new Direccion($_POST['id'], $_POST['latitud'], $_POST['longitud'], $_POST['altura'], $_POST['correo']);
+				$direccion = new Direccion($_POST['id'], $_POST['latitud'], $_POST['longitud'], $_POST['altura'], $_POST['correo']);
+				$direccion->guardarDireccion();
+				/*$direccion =  new Direccion($_POST['id'], $_POST['latitud'], $_POST['longitud'], $_POST['altura'], $_POST['correo']);
 				$response = null;
 				try {	
 					$sql = "INSERT INTO direccion (id, latitud, longitud, altura, correo)
@@ -30,26 +32,29 @@
 						"ESTADO"=>"NO CREADO",
 						"ERROR"=>$e
 					);
-				}
+				}*/
 			}else{
 				$response = array(
 						"SERVICIO"=>"ERROR",
 						"ESTADO"=>"DATA NULA"
 				);
+				/*$direccion = new Direccion("5", "3410", "54132", "410", "asi@correo.com");
+				$direccion->guardarDireccion();*/
 			}
-			$conexion = null;
 			echo json_encode($response);
 		break;
 		//Leer clientes o cliente GET
 		case 'GET':
-		
+			Direccion::mostrarDireccion($_GET['id']);
 		break;
 		//Actualizar cliente UPDATE
 		case 'PUT':
-		
+			Direccion::actualizarDireccion($_GET['id'],$_GET['latitud'],$_GET['longitud'],$_GET['altura']);
+		break;
 		//Eliminar cliente DELETE
 		case 'DELETE':
-		$response = null;
+			Direccion::borrarDireccion($_GET['correo']);
+		/*$response = null;
 		if(isset($_GET['correo'])){
 		$correo=$_GET['correo'];
 		
@@ -81,7 +86,7 @@
 		);
 	}
 	
-	echo json_encode($response);
+	echo json_encode($response);*/
 		break;
 	}
 ?>
