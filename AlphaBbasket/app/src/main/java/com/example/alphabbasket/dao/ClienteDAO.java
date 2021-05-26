@@ -36,31 +36,54 @@ import javax.crypto.NoSuchPaddingException;
 
 public class ClienteDAO {
 
-    private Boolean aux;
-    private Cliente clienteNuevo=null;
+    private static Boolean aux;
+    private static Cliente cliente=null;
     private Context context;
     private Box box=new Box();
 
-    public void setAux(Boolean aux) {
-        this.aux = aux;
-    }
 
-    public Boolean getAux() {
-        return aux;
-    }
 
     public ClienteDAO(Context context) {
         this.context = context;
     }
 
 
-    public Cliente getClienteByCorreo(final String correo){
+    public static Cliente getClienteByCorreo(String correo, Context context){
+        String uri =  Constantes.clientes+"/?correo="+correo;
+        cliente=new Cliente();
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            String stringCliente=jsonResponse.getString("cliente");
+                            JSONObject jsonCliente = new JSONObject(stringCliente);
+                            cliente=new Cliente(
+                                    jsonCliente.getString("id"),
+                                    jsonCliente.getString("nombres"),
+                                    jsonCliente.getString("apellidos"),
+                                    jsonCliente.getString("correo"),
+                                    jsonCliente.getString("edad"),
+                                    jsonCliente.getString("clave"));
 
+                        } catch (JSONException ex) {
 
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
 
-        return clienteNuevo;
+            }
+        });
+
+        queue.add(stringRequest);
+        return cliente;
     }
-    public boolean registrarCliente(final Cliente cliente){
+    public static boolean registrarCliente(Cliente c,  Context context){
+        cliente=c;
         aux=false;
         if(cliente!=null){
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
@@ -97,7 +120,7 @@ public class ClienteDAO {
         }else{
             aux=false;
         }
-        clienteNuevo=null;
+        cliente=null;
         return aux;
     }
 }

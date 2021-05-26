@@ -54,6 +54,7 @@
                 android:icon="@drawable/cerrar_logo_off_small"
                 android:text="Salir"/>
         </com.google.android.material.tabs.TabLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayoutFragment"

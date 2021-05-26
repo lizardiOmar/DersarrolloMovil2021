@@ -155,7 +155,7 @@ public class RegistroActivity extends AppCompatActivity {
                     String contraseñaEncriptada=box.encriptarPass(editTextContraseñaConfirmacion);
                     clienteNuevo=new Cliente("0", nombres, apellidos, correo, edad, contraseñaEncriptada);
 
-                    if(clienteDAO.registrarCliente(clienteNuevo)){
+                    if(clienteDAO.registrarCliente(clienteNuevo, getApplicationContext())){
                         textViewFrase.setText("Cuenta Registrada");
                     }else{
                         textViewFrase.setText("Error inesperado");

@@ -60,13 +60,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Toast.makeText(MainActivity.this, correo, Toast.LENGTH_LONG).show();
                         try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            String stringCliente=jsonResponse.getString("cliente");
-
-
-                            JSONObject jsonCliente = new JSONObject(stringCliente);
+                            JSONObject jsonCliente = new JSONObject(response);
                             //Integer id=jsonCliente.getInt("id");
                              cliente=new Cliente(
                                     jsonCliente.getString("id"),
@@ -75,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                     jsonCliente.getString("correo"),
                                     jsonCliente.getString("clave"),
                                     jsonCliente.getString("edad"));
-                            //Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, cliente.getNombres(), Toast.LENGTH_LONG).show();
+
                         } catch (JSONException ex) {
                             Toast.makeText(MainActivity.this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             c=null;
@@ -95,9 +92,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         this.tabMain=(TabLayout)findViewById(R.id.tabsMain);
         this.tabMain.addOnTabSelectedListener(this);
         this.fragmentView=(ConstraintLayout)findViewById(R.id.constraintlayoutFragment);
-        this.fragmentPerfil=new Perfil(R.id.constraintlayoutFragment);
-        this.fragmentPerfil.actualizarCliente(cliente);
+
+
         this.fragmentCerrarSesion=new CerrarSesion(correo);
+        fragmentPerfil=new Perfil(R.id.constraintlayoutFragment);
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentPerfil).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentCerrarSesion).commit();
         getSupportFragmentManager().beginTransaction().hide(fragmentCerrarSesion).commit();

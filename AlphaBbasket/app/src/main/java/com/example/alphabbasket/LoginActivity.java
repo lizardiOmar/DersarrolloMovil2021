@@ -1,53 +1,28 @@
 package com.example.alphabbasket;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.alphabbasket.dao.ClienteDAO;
+import com.example.alphabbasket.fragmentos.LoginFragment;
+import com.example.alphabbasket.fragmentos.RegistroFragment;
 import com.example.alphabbasket.model.Cliente;
-import com.example.alphabbasket.model.Constantes;
 import com.example.alphabbasket.tools.Box;
-import com.example.alphabbasket.tools.Encriptador;
+import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
     private TextView  textViewFrase;
-    private EditText editTextCorreo, editTextContraseña;
-    private Button buttonAcceder, buttonRegistrar;
-    private Animation animationMoveRight;
     private Box box=new Box();
-    private ClienteDAO clienteDAO;
-    private String correo, contraseña;
-
-
-
-
+    private TabLayout tabMain;
     private Cliente cliente;
-
+    private FrameLayout fragmentView;
+    private LoginFragment loginFRagment;
+    private RegistroFragment registroFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void agregarEventos() {
 
-        buttonRegistrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                textViewFrase.startAnimation(animationMoveRight);
-            }
-        });
+        /*
         buttonAcceder.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,7 +44,11 @@ public class LoginActivity extends AppCompatActivity {
                 if(validarFormulario()) {
                     correo=editTextCorreo.getText().toString().trim();
                     contraseña=editTextContraseña.getText().toString().trim();
+
+                    Toast.makeText(LoginActivity.this, ClienteDAO.getClienteByCorreo(correo, getApplicationContext()).getNombres(), Toast.LENGTH_SHORT).show();
+
                     RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.localGetPassCliente,
                             new Response.Listener<String>() {
                                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -119,30 +93,19 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Revise los datos.", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     private void iniciarComponentes() {
-        Context context=getApplicationContext();
-        clienteDAO=new ClienteDAO(context);
-        animationMoveRight = AnimationUtils.loadAnimation(this, R.anim.move_right);
-
-
+        this.tabMain=(TabLayout)findViewById(R.id.tabsMain);
+        this.tabMain.addOnTabSelectedListener(this);
+        this.fragmentView=(FrameLayout)findViewById(R.id.constraintlayoutFragment);
+        this.registroFragment=new RegistroFragment();
+        this.loginFRagment=new LoginFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, loginFRagment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, registroFragment).commit();
+        getSupportFragmentManager().beginTransaction().hide(registroFragment).commit();
         textViewFrase = (TextView) findViewById(R.id.textViewLema);
-
-
-        editTextCorreo = (EditText) findViewById(R.id.editTextCorreoLogin);
-
-        editTextContraseña = (EditText) findViewById(R.id.editTextClaveLogin);
-
-        buttonAcceder = (Button) findViewById(R.id.buttonLogin);
-
-        buttonRegistrar= (Button) findViewById(R.id.buttonNavegacionRegistro);
-
-
-
-
-        animationMoveRight = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move_right);
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -161,23 +124,50 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "error al navegar al acceso.", Toast.LENGTH_SHORT).show();
             }
         };
-        animationMoveRight.setAnimationListener(animationListener);
+
+
+
+
+
+
+
 
     }
-    private Boolean validarFormulario() {
-        Boolean aux = false;
-        if (box.editTextEmpty(editTextCorreo)) {
-            if (box.editTextEmpty(editTextContraseña)) {
-                if (box.correoValido(editTextCorreo)) {
-                    if (box.validarPass(editTextContraseña)) {
-                        aux = true;
-                    }
-                }
+
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        int selected=tab.getPosition();
+        switch (selected){
+            case 0:{
+                getSupportFragmentManager().beginTransaction().show(loginFRagment).commit();
+                break;
+            }
+            case 1:{
+                getSupportFragmentManager().beginTransaction().show(registroFragment).commit();
+                break;
             }
         }
-        return aux;
     }
 
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        int selected=tab.getPosition();
+        switch (selected){
+            case 0:{
+                getSupportFragmentManager().beginTransaction().hide(loginFRagment).commit();
+                break;
+            }
 
+            case 1:{
+                getSupportFragmentManager().beginTransaction().hide(registroFragment).commit();
+                break;
+            }
+        }
+    }
 
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

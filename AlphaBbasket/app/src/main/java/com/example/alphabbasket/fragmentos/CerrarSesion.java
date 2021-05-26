@@ -87,6 +87,7 @@ public class CerrarSesion extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cerrar_sesion, container, false);
         textViewNombres=(TextView)view.findViewById(R.id.textViewNombresSalir);
         context=view.getContext();
+        /*
         String uri =  Constantes.clientes+"/?correo="+correo;
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
@@ -119,7 +120,12 @@ public class CerrarSesion extends Fragment {
             }
         });
         queue.add(stringRequest);
+
+         */
+        cliente=ClienteDAO.getClienteByCorreo(correo, context);
+        textViewNombres.setText(cliente.getNombres());
         buttonSalir=(Button)view.findViewById(R.id.buttonSalir);
+
         buttonSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

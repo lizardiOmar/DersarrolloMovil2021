@@ -38,18 +38,16 @@ public class Perfil extends Fragment {
     public Perfil(int contentLayoutId) {
         super(contentLayoutId);
     }
-    public void actualizarCliente(Cliente c){
-        this.cliente=c;
-    }
-    public void setTextoNombres(String nombres){
-//        textViewNombre.setText(nombres);
+
+    public TextView getTextViewNombre(){
+        return textViewNombre;
     }
     public Cliente getCliente() {
         return cliente;
     }
 
     private void agregarEventos() {
-        textViewNombre.setText(getCliente().getNombres());
+        textViewNombre.setText(cliente.getNombres());
         buttonEditarCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

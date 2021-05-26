@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentos.LoginFragment">
+        <LinearLayout
+            android:id="@+id/linearLayoutPrincipalLogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_orange"
+            android:orientation="vertical"
+            android:padding="15pt">
+            <ImageView
+                android:id="@+id/imageViewLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/perfil_logo" />
+            <LinearLayout
+                android:id="@+id/linearLayoutForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/layout_orange"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="5sp"
+                android:layout_gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:padding="5pt"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowRadius="1"
+                    android:text="Accede a tu cuenta"
+                    android:textAlignment="gravity"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="12pt"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/editTextCorreoLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_orange"
+                    android:fontFamily="monospace"
+                    android:hint="@string/hint_correo"
+                    android:inputType="textEmailAddress"
+                    android:padding="5dp"
+                    android:selectAllOnFocus="true"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="1"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#F754545C"
+                    android:textSize="20sp"
+                    android:tooltipText='"Escribe el correo que registraste en B-basket.'
+                    android:gravity="center"/>
+                <EditText
+                    android:id="@+id/editTextClaveLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_orange"
+                    android:fontFamily="monospace"
+                    android:hint="@string/hint_contraseña"
+                    android:inputType="textPassword"
+                    android:padding="5dp"
+                    android:selectAllOnFocus="true"
+                    android:shadowColor="#000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="1"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#F754545C"
+                    android:textSize="20sp"
+                    android:tooltipText='"Escribe la contraseña que registraste en B-basket.'
+                    android:gravity="center"/>
+                <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/morado_gradient"
+                    android:fontFamily="monospace"
+                    android:padding="10sp"
+                    android:shadowColor="#512DA8"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="1"
+                    android:text="@string/labelButtonAcceso"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/textViewInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowRadius="1"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textIsSelectable="false"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/linearLayoutRecuperar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/layout_orange"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:padding="5sp"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_orange"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="center"
+                        android:shadowColor="#000000"
+                        android:shadowDx="2"
+                        android:shadowRadius="1"
+                        android:text="¿Olvidaste tú contraseña?"
+                        android:textAlignment="center"
+                        android:textColor="#FFFFFF"
+                        android:textIsSelectable="false"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/buttonRecuperarClave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/morado_gradient"
+                        android:fontFamily="monospace"
+                        android:padding="5sp"
+                        android:shadowColor="#512DA8"
+                        android:shadowDx="2"
+                        android:shadowDy="2"
+                        android:shadowRadius="1"
+                        android:text="Recupérala"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+</FrameLayout>

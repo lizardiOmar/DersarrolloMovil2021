@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentos.RegistroFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_orange"
+        android:orientation="vertical"
+        android:padding="5pt"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="5pt"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowRadius="1"
+            android:text="Cear una cuenta"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:textIsSelectable="false"
+            android:textSize="12pt"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/editTextNombres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:hint="Nombres(s)"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            android:padding="15sp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F754545C"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editTextApellidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:hint="Apellido(s)"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            android:padding="15sp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F754545C"
+            android:textSize="18sp" />
+
+
+        <EditText
+            android:id="@+id/editTextCorreoRegistroFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:hint="Correo"
+            android:inputType="textEmailAddress"
+            android:maxLength="20"
+            android:padding="15sp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F754545C"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editTextEdadRegistroFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:hint="Edad"
+            android:inputType="number"
+            android:maxLength="2"
+            android:padding="15sp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F754545C"
+            android:textSize="18sp" />
+
+
+        <EditText
+            android:id="@+id/editTextClaveRegistroFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:hint="@string/hint_contraseña"
+            android:inputType="textPassword"
+            android:padding="15sp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F754545C"
+            android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/buttonRegistrarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn"
+            android:fontFamily="monospace"
+            android:padding="15sp"
+            android:shadowColor="#512DA8"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:text="CREAR CUENTA"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

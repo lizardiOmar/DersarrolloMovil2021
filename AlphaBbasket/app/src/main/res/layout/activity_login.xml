@@ -1,56 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF8F00"
+    android:orientation="vertical"
+    android:background="@drawable/layout_orange"
     tools:context=".LoginActivity">
+
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#72F9A825"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_orange"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingHorizontal="10sp"
-        android:paddingVertical="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13999999">
-
-        <ImageView
-            android:id="@+id/imageViewLogo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/logo_splash_200_small" />
+        android:paddingVertical="10sp">
 
         <TextView
             android:id="@+id/textViewBbasket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#81F9A825"
-            android:backgroundTint="#FF8F00"
+            android:background="@drawable/morado_gradient"
             android:fadingEdge="horizontal|vertical"
             android:fadingEdgeLength="10sp"
             android:fontFamily="monospace"
             android:gravity="center"
             android:paddingHorizontal="32sp"
-            android:paddingTop="32sp"
-            android:paddingBottom="16sp"
-            android:shadowColor="#D84315"
-            android:shadowDx="10"
-            android:shadowRadius="12"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="10"
             android:text="B-basket"
             android:textAlignment="gravity"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_orange">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabsMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FF8F00"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="#FAFAFA"
+                app:tabTextColor="#6A6A6A">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabItemAcceder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#000000"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="10"
+                    android:text="Acceder" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabItemRegistrar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#000000"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="10"
+                    android:text="Crear cuenta" />
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
             android:id="@+id/textViewLema"
@@ -62,9 +87,8 @@
             android:fadingEdgeLength="10sp"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:paddingHorizontal="32sp"
-            android:paddingBottom="32sp"
-            android:shadowColor="#D84315"
+            android:padding="10sp"
+            android:shadowColor="#512DA8"
             android:shadowDx="10"
             android:shadowRadius="12"
             android:text="Ahorra más, contagia menos."
@@ -72,107 +96,15 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextCorreoLogin"
+        <FrameLayout
+            android:id="@+id/constraintlayoutFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3EEE7"
-            android:ems="10"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="30sp"
-            android:fontFamily="monospace"
-            android:foregroundTint="#F9A825"
-            android:hint="@string/hint_correo"
-            android:inputType="textEmailAddress"
-            android:paddingTop="60sp"
-            android:selectAllOnFocus="true"
-            android:shadowColor="#D84315"
-            android:shadowDx="20"
-            android:shadowDy="20"
-            android:shadowRadius="10"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#F7EBEBEC"
-            android:textSize="28sp"
-            android:tooltipText='"Escribe el correo que registraste en B-basket.' />
+            android:layout_height="match_parent"
+            android:background="#FF8F00">
 
-        <EditText
-            android:id="@+id/editTextClaveLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3EEE7"
-            android:ems="10"
-            android:fadingEdge="vertical"
-            android:fadingEdgeLength="30sp"
-            android:fontFamily="monospace"
-            android:foregroundTint="#F9A825"
-            android:hint="@string/hint_contraseña"
-            android:inputType="textPassword"
-            android:paddingTop="10sp"
-            android:selectAllOnFocus="true"
-            android:shadowColor="#D84315"
-            android:shadowDx="20"
-            android:shadowDy="20"
-            android:shadowRadius="10"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#F7EBEBEC"
-            android:textSize="28sp"
-            android:tooltipText='"Escribe la contraseña que registraste en B-basket.' />
-
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn"
-            android:fontFamily="monospace"
-            android:padding="20dp"
-            android:text="@string/labelButtonAcceso"
-            android:textColor="#FFFFFF"
-            android:textSize="28sp" />
-
-
+        </FrameLayout>
     </LinearLayout>
+</LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:padding="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-        <TextView
-            android:id="@+id/textViewSinCuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#81F9A825"
-            android:backgroundTint="#FF8F00"
-            android:fadingEdge="horizontal|vertical"
-            android:fadingEdgeLength="30sp"
-            android:fontFamily="monospace"
-            android:shadowColor="#D84315"
-            android:shadowDx="10"
-            android:shadowRadius="12"
-            android:text="¿No tienes una cuenta? Crea una "
-            android:textColor="#FFFFFF" />
 
-        <Button
-            android:id="@+id/buttonNavegacionRegistro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn"
-            android:fontFamily="monospace"
-            android:padding="10dp"
-            android:text="AQUI"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>

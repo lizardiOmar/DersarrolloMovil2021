@@ -11,7 +11,9 @@ public class Cliente {
         this.edad=edad;
         this.contrasena=contrasena;
     }
+    public Cliente(){
 
+    }
     public String getNombres() {
         return nombres;
     }
