@@ -23,7 +23,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="10sp"
             android:paddingVertical="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -138,40 +137,45 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="20sp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
             <TextView
-                android:id="@+id/textViewConCuenta"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#81F9A825"
                 android:backgroundTint="#FF8F00"
                 android:fadingEdge="horizontal|vertical"
-                android:fadingEdgeLength="30sp"
+                android:fadingEdgeLength="10sp"
                 android:fontFamily="monospace"
-                android:shadowColor="#D84315"
-                android:shadowDx="10"
-                android:shadowRadius="12"
-                android:text="¿Quieres editar tu perfil? Hazlo "
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/buttonEditarPerfil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/btn"
-                android:fontFamily="monospace"
-                android:padding="10dp"
-                android:text="AQUI"
+                android:gravity="center"
+                android:shadowColor="#512DA8"
+                android:shadowDx="2"
+                android:shadowRadius="1"
+                android:text="Cambia tus datos"
+                android:textAlignment="gravity"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="22sp"
+                android:textStyle="bold" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayoutFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FF8F00"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                tools:context=".MainActivity">
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

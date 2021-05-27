@@ -52,13 +52,13 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class LoginFragment extends Fragment {
-    private String correo, clave, claveEncrpitada;
+    private String correo, clave;
     private LoginViewModel mViewModel;
     private EditText editTextCorreo, editTextClave;
     private TextView textViewInfo;
     private Button buttonLogin, buttonRecuperarClave;
     private Boolean flag=false;
-    private Encriptador encriptador=new Encriptador();
+
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
@@ -102,7 +102,12 @@ public class LoginFragment extends Fragment {
 
                                     if(box.evaluarPass(clave, cliente.getContrasena())){
                                         Intent i = new Intent(getContext(), MainActivity.class );
-                                        i.putExtra("correo", correo);
+                                        i.putExtra("id", cliente.getId());
+                                        i.putExtra("nombres", cliente.getNombres());
+                                        i.putExtra("apellidos", cliente.getApellidos());
+                                        i.putExtra("edad", cliente.getEdad());
+                                        i.putExtra("correo", cliente.getCorreo());
+                                        i.putExtra("clave", cliente.getContrasena());
                                         startActivity(i);
                                         getActivity().finish();
                                     }else{
@@ -155,12 +160,9 @@ public class LoginFragment extends Fragment {
                }else{
                    if(box.correoValido(editTextCorreo)){
                        editTextClave.setVisibility(View.VISIBLE);
-                       editTextCorreo.setError(null);
                    }else{
                        editTextCorreo.setError("Correo no válido");
-                       if(editTextClave.getVisibility()==View.VISIBLE){
-                           editTextClave.setVisibility(View.INVISIBLE);
-                       }
+                       editTextClave.setVisibility(View.INVISIBLE);
                    }
                }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alphabbasket.EditarPerfilActivity;
 import com.example.alphabbasket.R;
@@ -28,22 +29,15 @@ public class Perfil extends Fragment {
 
         //Asignar clase Java a XML
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
-        buttonEditarCuenta=(Button)view.findViewById(R.id.buttonEditarPerfil);
         textViewNombre=(TextView)view.findViewById(R.id.nombre_text);
-
-
+        Bundle extras = getActivity().getIntent().getExtras();
+        String nombres = extras.getString("nombres");
+        textViewNombre.setText(nombres);
         return view;
     }
 
     public Perfil(int contentLayoutId) {
         super(contentLayoutId);
-    }
-
-    public TextView getTextViewNombre(){
-        return textViewNombre;
-    }
-    public Cliente getCliente() {
-        return cliente;
     }
 
     private void agregarEventos() {
@@ -52,12 +46,7 @@ public class Perfil extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), EditarPerfilActivity.class );
-                i.putExtra("id", cliente.getId());
-                i.putExtra("nombres", cliente.getNombres());
-                i.putExtra("apellidos", cliente.getApellidos());
-                i.putExtra("edad", cliente.getEdad());
-                i.putExtra("correo", cliente.getCorreo());
-                i.putExtra("clave", cliente.getContrasena());
+
                 startActivity(i);
 
             }

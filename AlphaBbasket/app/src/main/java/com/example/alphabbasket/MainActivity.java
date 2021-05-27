@@ -52,40 +52,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void getCliente() {
 
-        Bundle extras = getIntent().getExtras();
-        correo = extras.getString("correo");
-        String uri =  Constantes.clientes+"/?correo="+correo;
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this, correo, Toast.LENGTH_LONG).show();
-                        try {
-                            JSONObject jsonCliente = new JSONObject(response);
-                            //Integer id=jsonCliente.getInt("id");
-                             cliente=new Cliente(
-                                    jsonCliente.getString("id"),
-                                    jsonCliente.getString("nombres"),
-                                    jsonCliente.getString("apellidos"),
-                                    jsonCliente.getString("correo"),
-                                    jsonCliente.getString("clave"),
-                                    jsonCliente.getString("edad"));
-                            Toast.makeText(MainActivity.this, cliente.getNombres(), Toast.LENGTH_LONG).show();
-
-                        } catch (JSONException ex) {
-                            Toast.makeText(MainActivity.this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                            c=null;
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-        queue.add(stringRequest);
-
     }
     private void iniciarComponentes(){
         getCliente();

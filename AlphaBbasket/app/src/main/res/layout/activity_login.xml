@@ -38,7 +38,11 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
-
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo_splash_200_small" />
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbarMain"
             android:layout_width="match_parent"

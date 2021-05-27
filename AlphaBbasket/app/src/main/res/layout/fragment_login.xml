@@ -8,17 +8,13 @@
     tools:context=".fragmentos.LoginFragment">
         <LinearLayout
             android:id="@+id/linearLayoutPrincipalLogin"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/layout_orange"
             android:orientation="vertical"
             android:padding="15pt">
-            <ImageView
-                android:id="@+id/imageViewLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/perfil_logo" />
+
             <LinearLayout
                 android:id="@+id/linearLayoutForm"
                 android:layout_width="match_parent"
@@ -83,7 +79,7 @@
                     android:gravity="center"/>
                 <Button
                     android:id="@+id/buttonLogin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/morado_gradient"
                     android:fontFamily="monospace"
@@ -104,6 +100,7 @@
                 android:gravity="center"
                 android:shadowColor="#000000"
                 android:shadowDx="2"
+                android:padding="15sp"
                 android:shadowRadius="1"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
