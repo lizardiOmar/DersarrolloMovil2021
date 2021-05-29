@@ -33,9 +33,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+
         <activity android:name=".EditarPerfilActivity" />
         <activity
             android:name=".LoginActivity"
@@ -47,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".RegistroActivity" />
+
 
         <meta-data
             android:name="preloaded_fonts"

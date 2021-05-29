@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/textViewSpinnerItem_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:shadowColor="#D84315"
-        android:background="#FF8F00"
+        android:background="@drawable/morado_gradient"
         android:shadowDx="10"
         android:shadowRadius="12"
         android:textAlignment="center"

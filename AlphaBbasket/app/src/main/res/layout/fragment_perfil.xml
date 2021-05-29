@@ -145,6 +145,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
             <TextView
+                android:id="@+id/textViewTituloEditar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#81F9A825"
@@ -156,13 +157,12 @@
                 android:shadowColor="#512DA8"
                 android:shadowDx="2"
                 android:shadowRadius="1"
-                android:text="Cambia tus datos"
                 android:textAlignment="gravity"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
                 android:textStyle="bold" />
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintlayoutFragment"
+                android:id="@+id/constraintlayoutFragmentInFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FF8F00"
@@ -170,11 +170,39 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-                tools:context=".MainActivity">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabsMain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="center"
+                app:tabMode="fixed"
+                app:tabTextColor="#FFFFFF">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabItemEditarDatos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/editar_logo_small_30"
+                    android:text="Perfil"/>
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabItemEditarUbicacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/gps_logo_small_30_off"
+                    android:text="Ubicación" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/tabItemEditarClave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/bolsa_logo_off"
+                    android:text="Clave" />
+            </com.google.android.material.tabs.TabLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
