@@ -38,13 +38,12 @@ public class ClienteDAO {
 
     private static Boolean aux;
     private static Cliente cliente=null;
-    private Context context;
     private Box box=new Box();
 
 
 
-    public ClienteDAO(Context context) {
-        this.context = context;
+    public ClienteDAO() {
+
     }
 
 
@@ -86,37 +85,7 @@ public class ClienteDAO {
         cliente=c;
         aux=false;
         if(cliente!=null){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String ServerResponse) {
-                            aux=true;
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                            aux=false;
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    // Creating Map String Params.
-                    Map<String, String> params = new HashMap<String, String>();
-                    // Adding All values to Params.
-                    params.put("id", cliente.getId());
-                    params.put("nombres", cliente.getNombres());
-                    params.put("apellidos", cliente.getApellidos());
-                    params.put("correo", cliente.getCorreo());
-                    params.put("edad", cliente.getEdad());
-                    params.put("clave", cliente.getContrasena());
-                    return params;
-                }
-            };
-            // Creating RequestQueue.
-            RequestQueue requestQueue = Volley.newRequestQueue(context);
-            // Adding the StringRequest object into requestQueue.
-            requestQueue.add(stringRequest);
+
         }else{
             aux=false;
         }

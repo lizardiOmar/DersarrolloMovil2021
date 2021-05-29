@@ -3,11 +3,16 @@ package com.example.alphabbasket.fragmentos;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,55 +20,52 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.alphabbasket.LoginActivity;
+import com.example.alphabbasket.MainActivity;
 import com.example.alphabbasket.R;
 import com.example.alphabbasket.model.Cliente;
+import com.example.alphabbasket.model.Constantes;
 import com.example.alphabbasket.model.CustomSpinnerAdapter;
+import com.google.android.material.tabs.TabLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditarDatosFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class EditarDatosFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private int columna_index;
 
-    private Cliente cliente =null;
+    private String edad, nombres, apellidos, id, correo;
+    private Cliente cliente;
     private Spinner spinnerDatosCliente;
     private final String[] datos = { "...", "Nombres", "Apellidos", "Edad"};
     private String datoNuevo="";
     private int aux=0;
     private CustomSpinnerAdapter customAdapter;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private Button buttonGuardarCambios;
     private EditText editTextCambiarDato;
-    private Context context;
-    public EditarDatosFragment() {
-        // Required empty public constructor
+    private TextView textViewResultadoEditarDatos;
 
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditarDatosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditarDatosFragment newInstance(String param1, String param2) {
+    public static EditarDatosFragment newInstance() {
         EditarDatosFragment fragment = new EditarDatosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
+
+
 
         return fragment;
     }
@@ -71,11 +73,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
 
-        }
 
     }
 
@@ -89,20 +87,143 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
         spinnerDatosCliente = (Spinner) view.findViewById(R.id.spinnerDatosCliente);
         buttonGuardarCambios=(Button)view.findViewById(R.id.buttonGuardarCambio);
         editTextCambiarDato=(EditText)view.findViewById(R.id.editTextDatoEditable);
+        textViewResultadoEditarDatos=(TextView)view.findViewById(R.id.textViewResultadoEditarDatos);
 
-        context=view.getContext();
         spinnerDatosCliente.setAdapter(customAdapter);
         spinnerDatosCliente.setOnItemSelectedListener(this);
+        Bundle extras=getActivity().getIntent().getExtras();
+        nombres = extras.getString("nombres");
+        apellidos = extras.getString("apellidos");
+        edad = extras.getString("edad");
+        correo=extras.getString("correo");
+        id = extras.getString("id");
+
+        editTextCambiarDato.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+
+                buttonGuardarCambios.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        if(editTextCambiarDato.toString().trim().equals(nombres)||editTextCambiarDato.toString().trim().equals(apellidos)||editTextCambiarDato.toString().trim().equals(edad)){
+                            textViewResultadoEditarDatos.setText("No hay nungún cambio detectado en el dato "+datos[columna_index+1]);
+                            editTextCambiarDato.setError("No hay cambios");
+                        }else{
+                            if(editable.length()>0){
+                                final String dato=editTextCambiarDato.getText().toString().trim();
+                                final String mensaje="Cambiar "+datos[columna_index+1]+" en el usuario "+id+" por "+dato;
+                                final String columna=Integer.toString(columna_index);
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String ServerResponse) {
+                                                String uri =  Constantes.clientes+"/?correo="+correo;
+                                                RequestQueue queue = Volley.newRequestQueue(getContext());
+                                                StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                                                        new Response.Listener<String>() {
+                                                            @Override
+                                                            public void onResponse(String response) {
+                                                                //textViewInfo.setText(response);
+                                                                try {
+                                                                    JSONObject jsonCliente = new JSONObject(response);
+                                                                    //Integer id=jsonCliente.getInt("id");
+                                                                    Cliente cliente=new Cliente(
+                                                                            jsonCliente.getString("id"),
+                                                                            jsonCliente.getString("nombres"),
+                                                                            jsonCliente.getString("apellidos"),
+                                                                            jsonCliente.getString("correo"),
+                                                                            jsonCliente.getString("edad"),
+                                                                            jsonCliente.getString("clave"));
+                                                                    Intent i = new Intent(getContext(), MainActivity.class );
+                                                                    i.putExtra("id", cliente.getId());
+                                                                    i.putExtra("nombres", cliente.getNombres());
+                                                                    i.putExtra("apellidos", cliente.getApellidos());
+                                                                    i.putExtra("edad", cliente.getEdad());
+                                                                    i.putExtra("correo", cliente.getCorreo());
+                                                                    i.putExtra("clave", cliente.getContrasena());
+                                                                    startActivity(i);
+                                                                    getActivity().finish();
+
+                                                                } catch (JSONException ex) {
+
+                                                                }
+
+                                                            }
+                                                        }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                    }
+                                                });
+                                                queue.add(stringRequest);
+
+
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                textViewResultadoEditarDatos.setText(volleyError.getLocalizedMessage());
+                                            }
+                                        }) {
+                                    @Override
+                                    protected Map<String, String> getParams() {
+                                        // Creating Map String Params.
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        // Adding All values to Params.
+                                        params.put("id", id);
+                                        params.put("dato", dato);
+                                        params.put("index_columna", columna);
+                                        return params;
+                                    }
+                                };
+                                // Creating RequestQueue.
+                                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                                // Adding the StringRequest object into requestQueue.
+                                requestQueue.add(stringRequest);
+                            }else{
+                                editTextCambiarDato.setError("Escribe algo.");
+                            }
+                        }
+                    }
+
+                });
+            }
+        });
+
+
+
+
+
         return view;
     }
 
     @Override
     public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
+        //se asigna el indice de la selección a una variable final interna
+        final int x=i;
+        if(x!=0){
+            columna_index=x-1;
+            textViewResultadoEditarDatos.setText("Dato seleccionado: '"+datos[x]+"'."+columna_index);
+        }else{
+            textViewResultadoEditarDatos.setText("Ningún dato seleccionado.");
+            columna_index=100;
+        }
+
         if(!editTextCambiarDato.getText().toString().equals("")){
-            //se asigna el indice de la selección a una variable final interna
-            final int x=i;
             //Se crea una ventana de alerta en una implementación interna (c=context)
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             //Setters de la ventana (titulo, icono)
             builder.setTitle("Descartar cambios");
             builder.setIcon(R.drawable.editar_logo_small_30);
@@ -129,7 +250,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                         case 1:
                             buttonGuardarCambios.setText("Cambiar mis nombres");
                             buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getNombres());
+                            editTextCambiarDato.setHint(nombres);
                             editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                             editTextCambiarDato.setEnabled(true);
                             aux=x;
@@ -138,7 +259,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                         case 2:
                             buttonGuardarCambios.setText("Cambiar mis apellidos");
                             buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getApellidos());
+                            editTextCambiarDato.setHint(apellidos);
                             editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                             editTextCambiarDato.setEnabled(true);
                             aux=x;
@@ -147,7 +268,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                         case 3:
                             buttonGuardarCambios.setText("Cambiar mi edad");
                             buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(cliente.getEdad());
+                            editTextCambiarDato.setHint(edad);
                             editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
                             editTextCambiarDato.setEnabled(true);
                             aux=x;
@@ -193,7 +314,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                     case 1:
                         buttonGuardarCambios.setText("Cambiar mis nombres");
                         buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getNombres());
+                        editTextCambiarDato.setHint(nombres);
                         editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         editTextCambiarDato.setEnabled(true);
                         aux=i;
@@ -202,7 +323,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                     case 2:
                         buttonGuardarCambios.setText("Cambiar mis apellidos");
                         buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getApellidos());
+                        editTextCambiarDato.setHint(apellidos);
                         editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         editTextCambiarDato.setEnabled(true);
                         aux=i;
@@ -211,7 +332,7 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
                     case 3:
                         buttonGuardarCambios.setText("Cambiar mi edad");
                         buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(cliente.getEdad());
+                        editTextCambiarDato.setHint(edad);
                         editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
                         editTextCambiarDato.setEnabled(true);
                         aux=i;

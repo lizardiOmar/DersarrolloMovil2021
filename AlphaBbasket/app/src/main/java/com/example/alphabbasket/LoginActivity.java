@@ -114,9 +114,7 @@ public class LoginActivity extends AppCompatActivity implements TabLayout.OnTabS
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent i = new Intent(getApplicationContext(), RegistroActivity.class );
-                startActivity(i);
-                finish();
+
             }
 
             @Override

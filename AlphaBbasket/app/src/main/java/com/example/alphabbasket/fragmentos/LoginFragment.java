@@ -149,23 +149,20 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                if(charSequence.length()==0){
+                    editTextCorreo.setError("¿No tienes una cuenta?");
+                    editTextClave.setText("");
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-               if(editable.length()==0){
-                   editTextCorreo.setError("¿No tienes una cuenta?");
-                   editTextClave.setText("");
-               }else{
-                   if(box.correoValido(editTextCorreo)){
-                       editTextClave.setVisibility(View.VISIBLE);
-                   }else{
-                       editTextCorreo.setError("Correo no válido");
-                       editTextClave.setVisibility(View.INVISIBLE);
-                   }
-               }
-
+                if(box.correoValido(editTextCorreo)){
+                    editTextClave.setVisibility(View.VISIBLE);
+                }else{
+                    editTextCorreo.setError("Correo no válido");
+                    editTextClave.setVisibility(View.INVISIBLE);
+                }
             }
         });
         editTextClave.addTextChangedListener(new TextWatcher() {

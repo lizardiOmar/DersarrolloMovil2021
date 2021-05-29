@@ -1,33 +1,15 @@
 package com.example.alphabbasket;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.state.State;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.alphabbasket.fragmentos.CerrarSesion;
 import com.example.alphabbasket.fragmentos.Perfil;
 import com.example.alphabbasket.model.Cliente;
-import com.example.alphabbasket.model.Constantes;
 import com.google.android.material.tabs.TabLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
@@ -43,24 +25,31 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perfil);
+        setContentView(R.layout.activity_main);
         iniciarComponentes();
 
     }
 
 
 
-    private void getCliente() {
-
+    private Cliente getCliente() {
+        Bundle extras = getIntent().getExtras();
+        String id = extras.getString("id");
+        String nombres = extras.getString("nombres");
+        String apellidos = extras.getString("apellidos");
+        String correo = extras.getString("correo");
+        String edad = extras.getString("edad");
+        String clave = extras.getString("clave");
+        cliente =new Cliente(id, nombres, apellidos, correo, edad, clave);
+        return cliente;
     }
     private void iniciarComponentes(){
-        getCliente();
         this.tabMain=(TabLayout)findViewById(R.id.tabsMain);
         this.tabMain.addOnTabSelectedListener(this);
         this.fragmentView=(ConstraintLayout)findViewById(R.id.constraintlayoutFragment);
 
 
-        this.fragmentCerrarSesion=new CerrarSesion(correo);
+        this.fragmentCerrarSesion=new CerrarSesion();
         fragmentPerfil=new Perfil(R.id.constraintlayoutFragment);
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentPerfil).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentCerrarSesion).commit();

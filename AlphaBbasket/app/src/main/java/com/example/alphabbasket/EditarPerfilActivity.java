@@ -112,9 +112,7 @@ public class EditarPerfilActivity extends AppCompatActivity implements
                         RequestQueue requestQueue = Volley.newRequestQueue(EditarPerfilActivity.this);
                         // Adding the StringRequest object into requestQueue.
                         requestQueue.add(stringRequest);
-                        Intent i = new Intent(getApplicationContext(), RegistroActivity.class );
-                        startActivity(i);
-                        finish();
+
                     }
 
                 });
