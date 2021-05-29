@@ -1,8 +1,6 @@
 <?php
 	require_once 'conexion.php';
-	class cliente{
-		
-		
+	class cliente{		
 		var $id;
 		var $nombres;
 		var $apellidos;
@@ -52,7 +50,7 @@
 		}
 		
 		public function guardarCliente(){
-			$response = null;			
+					
 			try {	
 				$sql = "INSERT INTO cliente (id, nombres, apellidos, correo, edad, clave, fecha_alta)
 				VALUES ($this->id, '$this->nombres', '$this->apellidos', '$this->correo', $this->edad, '$this->clave', CURRENT_TIMESTAMP())";
@@ -70,23 +68,34 @@
 				);
 			}
 			$conn = null;
-			echo json_encode($response);
+			
+			return json_encode($response);
 		}
 	
-		public static function actualizarCliente($id, $dato, $index_columna){
-			$datos = array('nombres', 'apellidos', 'edad', 'correo', 'clave');
-			$sql="UPDATE cliente SET $datos[$index_columna] = '$dato' WHERE id = '$id';";
+		public static function actualizarCliente($id, $dato, $index){
+			$datos = array('nombres', 'apellidos', 'edad', 'clave');
+			$columna = $datos[$index];
+			$valor=$dato;
+			$sql = " UPDATE cliente SET  $columna = '$dato' WHERE id = '$id'";
 			try {	
 				$conn=new Conexion();
 				$conn->getConexion()->exec($sql);
-				echo "Dato ($datos[$index_columna]) actualizado.";
+				$response = array(
+					"Respuesta"=>"Dato ($datos[$index]) actualizado."
+				);
+				
 			} catch(PDOException $e){
 				$response = array(
 					"SERVICIO"=>"DESCONECTADO",
 					"ESTADO"=>"NO CREADO",
-					"ERROR"=>$e
+					"ERROR"=>$e,
+					"Columna"=>$datos[$index],
+					"Dato"=>$valor
 				);
+				
 			}
+			echo json_encode($response);
+			return json_encode($response);
 		}
 		
 		public static function borrarCliente($correo){
