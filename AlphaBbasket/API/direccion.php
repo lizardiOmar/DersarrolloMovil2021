@@ -48,8 +48,8 @@
 			$response = null;			
 			try {	
 				$sql = "INSERT INTO direccion (id, latitud, longitud, altura, correo)VALUES ($this->id, $this->latitud, $this->longitud, $this->altura, '$this->correo')";
-				$conn=new Conexion();
-				$conn->getConexion()->exec($sql);
+				$conn=new conexion();
+				$conn->getConexion()->query($sql);
 				
 				$response = array(
 					"SERVICIO"=>"CONECTADO",
@@ -71,23 +71,13 @@
 			$response = null;
 			$sql = "SELECT * FROM direccion WHERE id=$indice;";
 			try {
-				$conn=new Conexion();
+				$conn=new conexion();
 				$stmt = $conn->getConexion()->query($sql);
-				$result = $stmt->setFetchMode(PDO::FETCH_NUM);
+				$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 				while ($row = $stmt->fetch()) {
-					$id = $row[0];
-					$latitud = $row[1];
-					$longitud = $row[2];
-					$altura = $row[3];
-					$correo = $row[4];
+					$response[] = $row;
 				}
-				$direccion =  new Direccion("$id", "$latitud", "$longitud", "$altura", "$correo");
-				$response = array(
-					"direccion"=>$direccion
-				);
 				echo json_encode($response);
-				//echo $id . $latitud . $longitud . $altura . $correo . "Hecho!";
-				
 			} catch (PDOException $e) {
 				$response = array(
 					"estado"=>"FALLIDO",
@@ -101,7 +91,7 @@
 			$response = null;
 			$sql = "UPDATE direccion SET latitud='$latitud', longitud='$longitud', altura='$altura' WHERE id=$indice;";
 			try {
-				$conn=new Conexion();
+				$conn=new conexion();
 				$stmt = $conn->getConexion()->query($sql);
 				echo "Direccion actualizada!";
 			}catch(PDOException $e) {
@@ -117,7 +107,7 @@
 			$response = null;
 			$sql = "DELETE FROM direccion WHERE correo='$correo';";
 			try {
-				$conn=new Conexion();
+				$conn=new conexion();
 				$stmt = $conn->getConexion()->query($sql);
 				$response = array(
 					"estado"=>"TRUE",
