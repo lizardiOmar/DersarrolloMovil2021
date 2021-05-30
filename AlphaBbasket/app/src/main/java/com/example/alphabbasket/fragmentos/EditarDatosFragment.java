@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -19,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,35 +50,26 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditarDatosFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+import static android.graphics.Color.GRAY;
+import static android.graphics.Color.GREEN;
+import static android.graphics.Color.RED;
 
-    private int columna_index;
+public class EditarDatosFragment extends Fragment{
 
-    private String edad, nombres, apellidos, id, correo;
-    private Cliente cliente;
-    private Spinner spinnerDatosCliente;
-    private final String[] datos = { "...", "Nombres", "Apellidos", "Edad"};
-    private String datoNuevo="";
-    private int aux=0;
-    private CustomSpinnerAdapter customAdapter;
-    private Button buttonGuardarCambios;
-    private EditText editTextCambiarDato;
-    private TextView textViewResultadoEditarDatos;
+
+   private Cliente cliente;
+    private ImageButton imageButtonNombres, imageButtonApellidos, imageButtonEdad;
+    private EditText editTextNombres, editTextApellidos, editTextEdad;
+    private TextView textViewResultado;
+    private Boolean nombresB, apellidosB, edadB;
 
     public static EditarDatosFragment newInstance() {
-        EditarDatosFragment fragment = new EditarDatosFragment();
-
-
-
-
-        return fragment;
+        return new EditarDatosFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -83,267 +78,320 @@ public class EditarDatosFragment extends Fragment implements AdapterView.OnItemS
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_editar_datos, container, false);
 
-        customAdapter=new CustomSpinnerAdapter(view.getContext(),datos);
-        spinnerDatosCliente = (Spinner) view.findViewById(R.id.spinnerDatosCliente);
-        buttonGuardarCambios=(Button)view.findViewById(R.id.buttonGuardarCambio);
-        editTextCambiarDato=(EditText)view.findViewById(R.id.editTextDatoEditable);
-        textViewResultadoEditarDatos=(TextView)view.findViewById(R.id.textViewResultadoEditarDatos);
-
-        spinnerDatosCliente.setAdapter(customAdapter);
-        spinnerDatosCliente.setOnItemSelectedListener(this);
         Bundle extras=getActivity().getIntent().getExtras();
-        nombres = extras.getString("nombres");
-        apellidos = extras.getString("apellidos");
-        edad = extras.getString("edad");
-        correo=extras.getString("correo");
-        id = extras.getString("id");
 
-        editTextCambiarDato.addTextChangedListener(new TextWatcher() {
+        cliente=new Cliente(extras.getString("id"), extras.getString("nombres"), extras.getString("apellidos"), extras.getString("correo"),extras.getString("edad"), extras.getString("clave"));
+
+        editTextNombres=(EditText)view.findViewById(R.id.editTextNombres);
+        editTextApellidos=(EditText)view.findViewById(R.id.editTextApellidos);
+        editTextEdad=(EditText)view.findViewById(R.id.editTextEdad);
+
+        nombresB=false;
+        apellidosB=false;
+        edadB=false;
+
+        textViewResultado=(TextView)view.findViewById(R.id.textViewResultado);
+
+        editTextNombres.setEnabled(false);
+        editTextApellidos.setEnabled(false);
+        editTextEdad.setEnabled(false);
+
+        editTextNombres.setHint(cliente.getNombres());
+        editTextApellidos.setHint(cliente.getApellidos());
+        editTextEdad.setHint(cliente.getEdad());
+
+        imageButtonNombres=(ImageButton)view.findViewById(R.id.imageButtonNombres);
+        imageButtonApellidos=(ImageButton)view.findViewById(R.id.imageButtonApellidos);
+        imageButtonEdad=(ImageButton)view.findViewById(R.id.imageButtonEdad);
+
+        imageButtonNombres.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            public void onClick(View view) {
+                if(nombresB==false){
+                    editTextNombres.setEnabled(true);
+                    editTextNombres.setPressed(true);
 
-            }
+                    imageButtonNombres.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30_off));
+                    nombresB=true;
+                }else{
+                    editTextNombres.setEnabled(false);
+                    editTextNombres.setPressed(false);
+                    imageButtonNombres.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30));
+                    if(editTextNombres.getText().toString().trim().equals(cliente.getNombres())){
+                        textViewResultado.setText("Sin cambios detectados");
+                        editTextNombres.setText("");
+                    }else{
+                        if(editTextNombres.getText().toString().length()>0){
+                            final String nombre=editTextNombres.getText().toString().trim();
+                            final String columna="0";
+                            final String id=cliente.getId();
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String ServerResponse) {
+                                            String uri =  Constantes.clientes+"/?correo="+cliente.getCorreo();
+                                            RequestQueue queue = Volley.newRequestQueue(getContext());
+                                            StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            //textViewInfo.setText(response);
+                                                            try {
+                                                                JSONObject jsonCliente = new JSONObject(response);
+                                                                //Integer id=jsonCliente.getInt("id");
+                                                                Cliente cliente=new Cliente(
+                                                                        jsonCliente.getString("id"),
+                                                                        jsonCliente.getString("nombres"),
+                                                                        jsonCliente.getString("apellidos"),
+                                                                        jsonCliente.getString("correo"),
+                                                                        jsonCliente.getString("edad"),
+                                                                        jsonCliente.getString("clave"));
+                                                                Intent i = new Intent(getContext(), MainActivity.class );
+                                                                i.putExtra("id", cliente.getId());
+                                                                i.putExtra("nombres", cliente.getNombres());
+                                                                i.putExtra("apellidos", cliente.getApellidos());
+                                                                i.putExtra("edad", cliente.getEdad());
+                                                                i.putExtra("correo", cliente.getCorreo());
+                                                                i.putExtra("clave", cliente.getContrasena());
+                                                                startActivity(i);
+                                                                getActivity().finish();
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(final Editable editable) {
-
-                buttonGuardarCambios.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                        if(editTextCambiarDato.toString().trim().equals(nombres)||editTextCambiarDato.toString().trim().equals(apellidos)||editTextCambiarDato.toString().trim().equals(edad)){
-                            textViewResultadoEditarDatos.setText("No hay nungún cambio detectado en el dato "+datos[columna_index+1]);
-                            editTextCambiarDato.setError("No hay cambios");
-                        }else{
-                            if(editable.length()>0){
-                                final String dato=editTextCambiarDato.getText().toString().trim();
-                                final String mensaje="Cambiar "+datos[columna_index+1]+" en el usuario "+id+" por "+dato;
-                                final String columna=Integer.toString(columna_index);
-                                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
-                                        new Response.Listener<String>() {
-                                            @Override
-                                            public void onResponse(String ServerResponse) {
-                                                String uri =  Constantes.clientes+"/?correo="+correo;
-                                                RequestQueue queue = Volley.newRequestQueue(getContext());
-                                                StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
-                                                        new Response.Listener<String>() {
-                                                            @Override
-                                                            public void onResponse(String response) {
-                                                                //textViewInfo.setText(response);
-                                                                try {
-                                                                    JSONObject jsonCliente = new JSONObject(response);
-                                                                    //Integer id=jsonCliente.getInt("id");
-                                                                    Cliente cliente=new Cliente(
-                                                                            jsonCliente.getString("id"),
-                                                                            jsonCliente.getString("nombres"),
-                                                                            jsonCliente.getString("apellidos"),
-                                                                            jsonCliente.getString("correo"),
-                                                                            jsonCliente.getString("edad"),
-                                                                            jsonCliente.getString("clave"));
-                                                                    Intent i = new Intent(getContext(), MainActivity.class );
-                                                                    i.putExtra("id", cliente.getId());
-                                                                    i.putExtra("nombres", cliente.getNombres());
-                                                                    i.putExtra("apellidos", cliente.getApellidos());
-                                                                    i.putExtra("edad", cliente.getEdad());
-                                                                    i.putExtra("correo", cliente.getCorreo());
-                                                                    i.putExtra("clave", cliente.getContrasena());
-                                                                    startActivity(i);
-                                                                    getActivity().finish();
-
-                                                                } catch (JSONException ex) {
-
-                                                                }
+                                                            } catch (JSONException ex) {
 
                                                             }
-                                                        }, new Response.ErrorListener() {
-                                                    @Override
-                                                    public void onErrorResponse(VolleyError error) {
-                                                    }
-                                                });
-                                                queue.add(stringRequest);
 
-
-                                            }
-                                        },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError volleyError) {
-                                                textViewResultadoEditarDatos.setText(volleyError.getLocalizedMessage());
-                                            }
-                                        }) {
-                                    @Override
-                                    protected Map<String, String> getParams() {
-                                        // Creating Map String Params.
-                                        Map<String, String> params = new HashMap<String, String>();
-                                        // Adding All values to Params.
-                                        params.put("id", id);
-                                        params.put("dato", dato);
-                                        params.put("index_columna", columna);
-                                        return params;
-                                    }
-                                };
-                                // Creating RequestQueue.
-                                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                                // Adding the StringRequest object into requestQueue.
-                                requestQueue.add(stringRequest);
-                            }else{
-                                editTextCambiarDato.setError("Escribe algo.");
-                            }
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                }
+                                            });
+                                            queue.add(stringRequest);
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError volleyError) {
+                                            textViewResultado.setText(volleyError.getLocalizedMessage());
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    // Creating Map String Params.
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    // Adding All values to Params.
+                                    params.put("id", id);
+                                    params.put("dato", nombre);
+                                    params.put("index_columna", columna);
+                                    return params;
+                                }
+                            };
+                            // Creating RequestQueue.
+                            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                            // Adding the StringRequest object into requestQueue.
+                            requestQueue.add(stringRequest);
+                        }else{
+                            textViewResultado.setText("No es posible guardar el campo 'nombre' vacío.");
+                            editTextNombres.setText("");
                         }
                     }
-
-                });
+                    nombresB=false;
+                }
             }
         });
 
+        imageButtonApellidos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(apellidosB==false){
+                    editTextApellidos.setEnabled(true);
+                    editTextApellidos.setPressed(true);
+                    imageButtonApellidos.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30_off));
+                    apellidosB=true;
+                }else{
+                    editTextApellidos.setEnabled(false);
+                    editTextApellidos.setPressed(false);
+                    imageButtonApellidos.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30));
+                    if(editTextApellidos.getText().toString().trim().equals(cliente.getApellidos())){
+                        textViewResultado.setText("Sin cambios detectados");
+                        editTextApellidos.setText("");
+                    }else{
+                        if(editTextApellidos.getText().toString().length()>0){
+                            final String apellido=editTextApellidos.getText().toString().trim();
+                            final String columna="1";
+                            final String id=cliente.getId();
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String ServerResponse) {
+                                            String uri =  Constantes.clientes+"/?correo="+cliente.getCorreo();
+                                            RequestQueue queue = Volley.newRequestQueue(getContext());
+                                            StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            //textViewInfo.setText(response);
+                                                            try {
+                                                                JSONObject jsonCliente = new JSONObject(response);
+                                                                //Integer id=jsonCliente.getInt("id");
+                                                                Cliente cliente=new Cliente(
+                                                                        jsonCliente.getString("id"),
+                                                                        jsonCliente.getString("nombres"),
+                                                                        jsonCliente.getString("apellidos"),
+                                                                        jsonCliente.getString("correo"),
+                                                                        jsonCliente.getString("edad"),
+                                                                        jsonCliente.getString("clave"));
+                                                                Intent i = new Intent(getContext(), MainActivity.class );
+                                                                i.putExtra("id", cliente.getId());
+                                                                i.putExtra("nombres", cliente.getNombres());
+                                                                i.putExtra("apellidos", cliente.getApellidos());
+                                                                i.putExtra("edad", cliente.getEdad());
+                                                                i.putExtra("correo", cliente.getCorreo());
+                                                                i.putExtra("clave", cliente.getContrasena());
+                                                                startActivity(i);
+                                                                getActivity().finish();
 
+                                                            } catch (JSONException ex) {
 
+                                                            }
 
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                }
+                                            });
+                                            queue.add(stringRequest);
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError volleyError) {
+                                            textViewResultado.setText(volleyError.getLocalizedMessage());
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    // Creating Map String Params.
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    // Adding All values to Params.
+                                    params.put("id", id);
+                                    params.put("dato", apellido);
+                                    params.put("index_columna", columna);
+                                    return params;
+                                }
+                            };
+                            // Creating RequestQueue.
+                            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                            // Adding the StringRequest object into requestQueue.
+                            requestQueue.add(stringRequest);
+                        }else{
+                            textViewResultado.setText("No es posible guardar el cmapo 'apellido' vacío.");
+                            editTextApellidos.setText("");
+                        }
+                    }
+                    apellidosB=false;
+                }
+            }
+        });
 
+        imageButtonEdad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(edadB==false){
+                    editTextEdad.setEnabled(true);
+                    editTextEdad.setPressed(true);
+                    imageButtonEdad.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30_off));
+                    edadB=true;
+                }else{
+                    editTextEdad.setEnabled(false);
+                    editTextEdad.setPressed(false);
+                    imageButtonEdad.setImageIcon(Icon.createWithResource(getActivity().getApplicationContext(), R.drawable.editar_logo_small_30));
+                    if(editTextEdad.getText().toString().trim().equals(cliente.getEdad())){
+                        textViewResultado.setText("Sin cambios detectados");
+                        editTextEdad.setText("");
+                    }else{
+                        if(editTextEdad.getText().toString().length()>0){
+                            final String edad=editTextEdad.getText().toString().trim();
+                            final String columna="2";
+                            final String id=cliente.getId();
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.clientes,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String ServerResponse) {
+                                            String uri =  Constantes.clientes+"/?correo="+cliente.getCorreo();
+                                            RequestQueue queue = Volley.newRequestQueue(getContext());
+                                            StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String response) {
+                                                            //textViewInfo.setText(response);
+                                                            try {
+                                                                JSONObject jsonCliente = new JSONObject(response);
+                                                                //Integer id=jsonCliente.getInt("id");
+                                                                Cliente cliente=new Cliente(
+                                                                        jsonCliente.getString("id"),
+                                                                        jsonCliente.getString("nombres"),
+                                                                        jsonCliente.getString("apellidos"),
+                                                                        jsonCliente.getString("correo"),
+                                                                        jsonCliente.getString("edad"),
+                                                                        jsonCliente.getString("clave"));
+                                                                Intent i = new Intent(getContext(), MainActivity.class );
+                                                                i.putExtra("id", cliente.getId());
+                                                                i.putExtra("nombres", cliente.getNombres());
+                                                                i.putExtra("apellidos", cliente.getApellidos());
+                                                                i.putExtra("edad", cliente.getEdad());
+                                                                i.putExtra("correo", cliente.getCorreo());
+                                                                i.putExtra("clave", cliente.getContrasena());
+                                                                startActivity(i);
+                                                                getActivity().finish();
+
+                                                            } catch (JSONException ex) {
+
+                                                            }
+
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+
+                                                }
+                                            });
+                                            queue.add(stringRequest);
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError volleyError) {
+                                            textViewResultado.setText(volleyError.getLocalizedMessage());
+                                        }
+                                    }) {
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    // Creating Map String Params.
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    // Adding All values to Params.
+                                    params.put("id", id);
+                                    params.put("dato", edad);
+                                    params.put("index_columna", columna);
+                                    return params;
+                                }
+                            };
+                            // Creating RequestQueue.
+                            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                            // Adding the StringRequest object into requestQueue.
+                            requestQueue.add(stringRequest);
+                        }else{
+                            textViewResultado.setText("No es posible guardarel campo 'edad' vacío.");
+                            editTextEdad.setText("");
+                        }
+                    }
+                    edadB=false;
+                }
+            }
+        });
         return view;
     }
 
-    @Override
-    public void onItemSelected(final AdapterView<?> adapterView, View view, int i, long l) {
-        //se asigna el indice de la selección a una variable final interna
-        final int x=i;
-        if(x!=0){
-            columna_index=x-1;
-            textViewResultadoEditarDatos.setText("Dato seleccionado: '"+datos[x]+"'."+columna_index);
-        }else{
-            textViewResultadoEditarDatos.setText("Ningún dato seleccionado.");
-            columna_index=100;
-        }
 
-        if(!editTextCambiarDato.getText().toString().equals("")){
-            //Se crea una ventana de alerta en una implementación interna (c=context)
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            //Setters de la ventana (titulo, icono)
-            builder.setTitle("Descartar cambios");
-            builder.setIcon(R.drawable.editar_logo_small_30);
-            builder.setMessage("¿deseas descartar los cambios en ("+ datos[aux]+" "+editTextCambiarDato.getText().toString().trim()+")?");
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                //Botón aceptar descartar la información
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //la variable dato nuevo se iguala con nada
-                    datoNuevo="";
-                    //se asigna ese valor al editTextCambiarDato
-                    editTextCambiarDato.setText("");
-                    //Se asigna al adaptador la selección mas reciente
-                    adapterView.setSelection(x);
-                    switch (x){
-                        //Si el item corresponde al 0, no se habilita ninguna opción de edición
-                        case 0:
-                            editTextCambiarDato.setEnabled(false);
-                            buttonGuardarCambios.setVisibility(View.INVISIBLE);
-                            editTextCambiarDato.setHint("Selecciona una opción");
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 1, se habilita la opción de edición de nombres
-                        case 1:
-                            buttonGuardarCambios.setText("Cambiar mis nombres");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(nombres);
-                            editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 2, se habilita la opción de edición de apellidos
-                        case 2:
-                            buttonGuardarCambios.setText("Cambiar mis apellidos");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(apellidos);
-                            editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                        //Si el item corresponde al 3, se habilita la opción de edición de edad
-                        case 3:
-                            buttonGuardarCambios.setText("Cambiar mi edad");
-                            buttonGuardarCambios.setVisibility(View.VISIBLE);
-                            editTextCambiarDato.setHint(edad);
-                            editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
-                            editTextCambiarDato.setEnabled(true);
-                            aux=x;
-                            break;
-                    }
-                }
-            });
-            //Botón para no descartar la información
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Sé le asigna a la variable datoNuevo el valor del contenido del editTextCambioDato
-                    datoNuevo=editTextCambiarDato.getText().toString().trim();
-                    //Sé vacía la variable datoNuevo
-                    editTextCambiarDato.setText("");
-                    //Se asigna al adaptador la selección del dato que se está editando
-                    adapterView.setSelection(aux);
-                    dialog.cancel();
-                }
-            });
-            AlertDialog dialog = builder.create();
-
-            dialog.show();
-            //Sí el editTextDatoEditable está vacío
-        }else{
-            //Si la variable 'datoNuevo' no está vacía
-            if(!datoNuevo.equals("")){
-                //Se coloca su valor dentro del editTextCambiarDato
-                editTextCambiarDato.setText(datoNuevo);
-                //Y sé vacía la variable
-                datoNuevo="";
-                //Si la variable 'datoNuevo' sí está vacía
-            }else{
-                switch (i){
-                    //Si el item corresponde al 0, no se habilita ninguna opción de edición
-                    case 0:
-                        editTextCambiarDato.setEnabled(false);
-                        buttonGuardarCambios.setVisibility(View.INVISIBLE);
-                        editTextCambiarDato.setHint("Selecciona una opción");
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 1, se habilita la opción de edición de nombres
-                    case 1:
-                        buttonGuardarCambios.setText("Cambiar mis nombres");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(nombres);
-                        editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 2, se habilita la opción de edición de apellidos
-                    case 2:
-                        buttonGuardarCambios.setText("Cambiar mis apellidos");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(apellidos);
-                        editTextCambiarDato.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                    //Si el item corresponde al 3, se habilita la opción de edición de edad
-                    case 3:
-                        buttonGuardarCambios.setText("Cambiar mi edad");
-                        buttonGuardarCambios.setVisibility(View.VISIBLE);
-                        editTextCambiarDato.setHint(edad);
-                        editTextCambiarDato.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        editTextCambiarDato.setEnabled(true);
-                        aux=i;
-                        break;
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }

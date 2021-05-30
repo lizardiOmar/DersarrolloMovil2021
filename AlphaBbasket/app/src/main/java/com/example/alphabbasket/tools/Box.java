@@ -1,8 +1,10 @@
 package com.example.alphabbasket.tools;
 
 
+import android.graphics.drawable.Icon;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 
 import com.example.alphabbasket.model.Constantes;
@@ -108,4 +110,5 @@ public class Box {
         }
         return aux;
     }
+
 }
