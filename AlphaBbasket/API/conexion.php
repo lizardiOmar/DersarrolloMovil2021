@@ -9,10 +9,10 @@
 		var $estado_servidor;
 		
 		public function __construct(){
-			$this->servername		= "localhost";
-			$this->username 		= "root";
-			$this->password 		= "";
-			$this->database 	 	= "bbasket";
+			$this->servername		= "db4free.net";
+			$this->username 		= "desarrollo_movil";
+			$this->password 		= "2719b86c";
+			$this->database 	 	= "bbasket_android";
 			$this->conexion			= null;
 			$this->estado_servidor	= "desconectado"; 
 			try {
