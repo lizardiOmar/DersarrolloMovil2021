@@ -53,7 +53,6 @@ import javax.crypto.NoSuchPaddingException;
 
 public class LoginFragment extends Fragment {
     private String correo, clave;
-    private LoginViewModel mViewModel;
     private EditText editTextCorreo, editTextClave;
     private TextView textViewInfo;
     private Button buttonLogin, buttonRecuperarClave;
@@ -199,11 +198,6 @@ public class LoginFragment extends Fragment {
 
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        // TODO: Use the ViewModel
-    }
+
 
 }

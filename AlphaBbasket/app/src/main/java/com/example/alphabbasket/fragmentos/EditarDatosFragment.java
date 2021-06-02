@@ -40,8 +40,10 @@ import com.example.alphabbasket.R;
 import com.example.alphabbasket.model.Cliente;
 import com.example.alphabbasket.model.Constantes;
 import com.example.alphabbasket.model.CustomSpinnerAdapter;
+import com.example.alphabbasket.model.Direccion;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
@@ -56,11 +58,14 @@ import static android.graphics.Color.RED;
 
 public class EditarDatosFragment extends Fragment{
 
+    private Cliente cliente;
 
-   private Cliente cliente;
     private ImageButton imageButtonNombres, imageButtonApellidos, imageButtonEdad;
+
     private EditText editTextNombres, editTextApellidos, editTextEdad;
+
     private TextView textViewResultado;
+
     private Boolean nombresB, apellidosB, edadB;
 
     public static EditarDatosFragment newInstance() {
@@ -146,6 +151,7 @@ public class EditarDatosFragment extends Fragment{
                                                                         jsonCliente.getString("correo"),
                                                                         jsonCliente.getString("edad"),
                                                                         jsonCliente.getString("clave"));
+
                                                                 Intent i = new Intent(getContext(), MainActivity.class );
                                                                 i.putExtra("id", cliente.getId());
                                                                 i.putExtra("nombres", cliente.getNombres());
@@ -153,6 +159,7 @@ public class EditarDatosFragment extends Fragment{
                                                                 i.putExtra("edad", cliente.getEdad());
                                                                 i.putExtra("correo", cliente.getCorreo());
                                                                 i.putExtra("clave", cliente.getContrasena());
+
                                                                 startActivity(i);
                                                                 getActivity().finish();
 
@@ -382,7 +389,7 @@ public class EditarDatosFragment extends Fragment{
                             // Adding the StringRequest object into requestQueue.
                             requestQueue.add(stringRequest);
                         }else{
-                            textViewResultado.setText("No es posible guardarel campo 'edad' vacío.");
+                            textViewResultado.setText("No es posible guardar el campo 'edad' vacío.");
                             editTextEdad.setText("");
                         }
                     }

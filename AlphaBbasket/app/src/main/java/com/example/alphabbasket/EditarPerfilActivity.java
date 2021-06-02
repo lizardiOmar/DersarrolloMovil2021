@@ -43,19 +43,15 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditarPerfilActivity extends AppCompatActivity implements
-        OnMapReadyCallback{
-    private LocationManager locManager;
+public class EditarPerfilActivity extends AppCompatActivity {
+
     private LocationListener locListener;
-    private Location location;
-    private Button buttonGPS, buttonCancelar, buttonEliminarCuenta;
+    private Button buttonCancelar, buttonEliminarCuenta;
     private Boolean flag = false;
-    private String latitud, longitud, altura;
-    private Fragment map;
-    private Direccion direccion;
+
     private Cliente cliente;
     private Context c=this;
-    private LatLng latLng;
+
     private Box box=new Box();
 
 
@@ -66,7 +62,6 @@ public class EditarPerfilActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_editar_perfil);
         iniciarComponentes();
         agregarEventos();
-        rastreoGPS();
     }
 
     private void agregarEventos() {
@@ -129,71 +124,13 @@ public class EditarPerfilActivity extends AppCompatActivity implements
             }
         });
 
-        buttonGPS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(EditarPerfilActivity.this, "BUSCANDO", Toast.LENGTH_LONG).show();
-                rastreoGPS();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, Constantes.direcciones,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String ServerResponse) {
-                                // Showing response message coming from server
-                                //Toast.makeText(EditarPerfilActivity.this, ServerResponse+" dijo el servidor", Toast.LENGTH_LONG).show();
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                // Showing error message if something goes wrong.
-                                //Toast.makeText(EditarPerfilActivity.this, volleyError.getLocalizedMessage()+" dijo el volley", Toast.LENGTH_LONG).show();
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        // Creating Map String Params.
-                        Map<String, String> params = new HashMap<String, String>();
-                        // Adding All values to Params.
-                        params.put("id", direccion.getId());
-                        params.put("latitud", direccion.getLatitud());
-                        params.put("longitud", direccion.getLongitud());
-                        params.put("altura", direccion.getAltura());
-                        params.put("correo", direccion.getCorreo());
-                        return params;
-                    }
-                };
-                // Creating RequestQueue.
-                RequestQueue requestQueue = Volley.newRequestQueue(EditarPerfilActivity.this);
-                // Adding the StringRequest object into requestQueue.
-                requestQueue.add(stringRequest);
-
-            }
-        });
-
-    }
-
-
-
-    private void rastreoGPS() {
-        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(EditarPerfilActivity.this, "NO ACTIVASTE EL GPS", Toast.LENGTH_LONG).show();
-            return;
-        }
-        location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if(location!=null){
-            latitud=String.valueOf(location.getLatitude()).trim();
-            longitud=String.valueOf(location.getLongitude()).trim();
-            altura=String.valueOf(location.getAltitude()).trim();
-            direccion=new Direccion("0", latitud, longitud, altura, cliente.getCorreo());
-            latLng=new LatLng(location.getLatitude(), location.getLongitude());
-            Toast.makeText(EditarPerfilActivity.this, "Ubicación: "+latLng.toString(), Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(EditarPerfilActivity.this, "Ubicación: desconocida", Toast.LENGTH_LONG).show();
-        }
 
 
     }
+
+
+
+
 
 
 
@@ -210,7 +147,6 @@ public class EditarPerfilActivity extends AppCompatActivity implements
         cliente=new Cliente(id, nombres, apellidos, correo, clave, edad);
 
         this.buttonCancelar = (Button) findViewById(R.id.buttonCancelar);
-        this.buttonGPS = (Button) findViewById(R.id.buttonGPSBuscar);
         this.buttonEliminarCuenta = (Button) findViewById(R.id.buttonEliminar);
 
 
@@ -219,46 +155,12 @@ public class EditarPerfilActivity extends AppCompatActivity implements
 
         // Create an ArrayAdapter using the string array and a default spinner layout
 
-        mapaDisponible();
-
-    }
-
-    private void mapaDisponible() {
-        if (map == null) {
-            map = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            ((SupportMapFragment) map).getMapAsync(EditarPerfilActivity.this);
-
-        }
-        if (map != null) {
-
-            Toast.makeText(this, "Mapa de Google disponible", Toast.LENGTH_SHORT).show();
-
-        }
 
     }
 
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "No hay Mapa de Google disponible", Toast.LENGTH_SHORT).show();
-            return;
-        }else{
-            //Tipo de mapa normal
-            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            //Activa los pronosticos de trafico
-            googleMap.setTrafficEnabled(true);
-            //Permite activar el boton en el mapa para centrar la ubicación actual
-            googleMap.setMyLocationEnabled(true);
-            //Activa los edificos en el mapa
-            googleMap.setBuildingsEnabled(true);
-            //Nivel de zoom (calles y cuadras)
-            googleMap.setMinZoomPreference(15);
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
-            googleMap.moveCamera(cameraUpdate);
 
-        }
 
-    }
+
 
 }

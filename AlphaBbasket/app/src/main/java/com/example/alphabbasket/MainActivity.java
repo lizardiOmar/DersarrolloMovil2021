@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.example.alphabbasket.fragmentos.BusquedaFragment;
 import com.example.alphabbasket.fragmentos.CerrarSesion;
 import com.example.alphabbasket.fragmentos.Perfil;
 import com.example.alphabbasket.model.Cliente;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ConstraintLayout fragmentView;
     private Perfil fragmentPerfil;
     private CerrarSesion fragmentCerrarSesion;
+    private BusquedaFragment busquedaFragment;
     private String correo;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,9 +53,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         this.fragmentCerrarSesion=new CerrarSesion();
         fragmentPerfil=new Perfil(R.id.constraintlayoutFragment);
+        this.busquedaFragment=new BusquedaFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentPerfil).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, fragmentCerrarSesion).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.constraintlayoutFragment, busquedaFragment).commit();
         getSupportFragmentManager().beginTransaction().hide(fragmentCerrarSesion).commit();
+        getSupportFragmentManager().beginTransaction().hide(busquedaFragment).commit();
     }
 
     @Override
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
             case 1:{
                 tab.setIcon(R.drawable.buscar_logo_small);
-
+                getSupportFragmentManager().beginTransaction().show(busquedaFragment).commit();
                 break;
             }
             case 2:{
@@ -102,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
             case 1: {
                 tab.setIcon(R.drawable.buscar_logo_off_small);
+                getSupportFragmentManager().beginTransaction().hide(busquedaFragment).commit();
                 break;
             }
             case 2: {
