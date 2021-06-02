@@ -51,6 +51,7 @@ public class CambiarClave extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cambiar_clave, container, false);
+        this.bRestablecer = (Button) view.findViewById(R.id.buttonRestablecer);
         extras = getActivity().getIntent().getExtras();
         String id = extras.getString("id");
         String nombres = extras.getString("nombres");
@@ -97,6 +98,7 @@ public class CambiarClave extends Fragment {
                                         aviso.setVisibility(View.VISIBLE);
                                         contNueva.setVisibility(View.VISIBLE);
                                         contNuevaBis.setVisibility(View.VISIBLE);
+                                        bRestablecer.setVisibility(View.VISIBLE);
 
                                     } else {
                                         contActual.setText("");
@@ -120,7 +122,7 @@ public class CambiarClave extends Fragment {
                 queue.add(stringRequest);
             }
         });
-        this.bRestablecer = (Button) view.findViewById(R.id.buttonRestablecer);
+
         bRestablecer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
