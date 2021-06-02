@@ -76,12 +76,12 @@
 			$datos = array('nombres', 'apellidos', 'edad', 'clave');
 			$columna = $datos[$index];
 			$valor=$dato;
-			$sql = " UPDATE cliente SET  $columna = '$dato' WHERE id = '$id'";
+			$sql = "UPDATE cliente SET  $columna = '$dato' WHERE id = '$id'";
 			try {	
 				$conn=new Conexion();
 				$conn->getConexion()->exec($sql);
 				$response = array(
-					"Respuesta"=>"Dato ($datos[$index]) actualizado."
+					"Respuesta"=>"Dato ($datos[$index]) actualizado.($valor)"
 				);
 				
 			} catch(PDOException $e){

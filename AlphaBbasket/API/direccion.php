@@ -1,11 +1,11 @@
 <?php
-	require_once 'conexion.php';
 	class Direccion{
 		var $id;
 		var $latitud;
 		var $longitud;
 		var $altura;
 		var $correo;
+		
 		public function __construct($id, $latitud, $longitud, $altura, $correo){
 			$this->id 			= $id;
 			$this->latitud 		= $latitud;
@@ -39,7 +39,6 @@
 				return $this->correo;
 			}
 		}
-		
 		public function __toString(){
 			echo $id . " " . $latitud . " " . $longitud . " " . $altura . " " . $correo;
 		}
@@ -55,23 +54,70 @@
 					"SERVICIO"=>"CONECTADO",
 					"ESTADO"=>"CREADO"
 				);
+				
 			} catch(PDOException $e) {
 				$response = array(
 					"SERVICIO"=>"DESCONECTADO",
 					"ESTADO"=>"NO CREADO",
 					"ERROR"=>$e
 				);
+				
 			}
 			$conn = null;
 			//echo json_encode($response);
 			echo json_encode($response);
 		}
 		
-		public static function mostrarDireccion($indice){
+		public static function actualizarDireccion($correo, $latitud, $longitud, $altura){
 			$response = null;
-			$sql = "SELECT * FROM direccion WHERE id=$indice;";
+			$email=$correo;
+			$lat=$latitud;
+			$lon=$longitud;
+			$alt=$altura;
+			$sql = "UPDATE direccion SET latitud=$lat, longitud=$lon, altura=$alt WHERE correo='$correo';";
 			try {
 				$conn=new conexion();
+				$conn->getConexion()->query($sql);
+				$response = array(
+					"Respuesta"=>"Coordenadas actualizadas."
+				);
+			}catch(PDOException $e) {
+					$response = array(
+						"SERVICIO"=>"DESCONECTADO",
+						"ESTADO"=>"NO CREADO",
+						"ERROR"=>$e
+					);
+			}
+			echo json_encode($response);
+			return json_encode($response);
+		}
+		
+		public static  function borrarDireccion($correo){
+			$response = null;
+			$sql = "DELETE FROM direccion WHERE correo='$correo';";
+			try {
+				$conn=new conexion();
+				$stmt = $conn->getConexion()->query($sql);
+				$response = array(
+					"estado"=>"TRUE",
+					"accion"=>"DELETE"
+				);
+				//echo json_encode($response);
+			} catch (PDOException $e) {
+				$response = array(
+					"estado"=>"FALSE",
+					"MENSAJE"=>$e
+				);
+				echo json_encode($response);
+			}
+			
+		}
+		
+		public static function mostrarDireccion($correo){
+			$response = null;
+			$sql = "SELECT * FROM direccion WHERE correo='$correo';";
+			try {
+				$conn=new Conexion();
 				$stmt = $conn->getConexion()->query($sql);
 				$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 				while ($row = $stmt->fetch()) {
@@ -85,42 +131,8 @@
 				);
 				echo json_encode($response);
 			}
-		}
-		
-		public static function actualizarDireccion($indice, $latitud, $longitud, $altura){
-			$response = null;
-			$sql = "UPDATE direccion SET latitud='$latitud', longitud='$longitud', altura='$altura' WHERE id=$indice;";
-			try {
-				$conn=new conexion();
-				$stmt = $conn->getConexion()->query($sql);
-				echo "Direccion actualizada!";
-			}catch(PDOException $e) {
-					$response = array(
-						"SERVICIO"=>"DESCONECTADO",
-						"ESTADO"=>"NO CREADO",
-						"ERROR"=>$e
-					);
-			}
-		}
-		
-		public static function borrarDireccion($correo){
-			$response = null;
-			$sql = "DELETE FROM direccion WHERE correo='$correo';";
-			try {
-				$conn=new conexion();
-				$stmt = $conn->getConexion()->query($sql);
-				$response = array(
-					"estado"=>"TRUE",
-					"MENSAJE"=>"Cuenta eliminada"
-				);
-			} catch (PDOException $e) {
-				$response = array(
-					"estado"=>"FALSE",
-					"MENSAJE"=>$e
-				);
-			}
-			
-			echo json_encode($response);
+			return json_encode($response);
 		}
 	}
+	
 ?>	
