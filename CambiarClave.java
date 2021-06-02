@@ -28,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CambiarClave extends Fragment {
-    private LoginViewModel mViewModel;
     private EditText contActual;
     private EditText contNueva;
     private EditText contNuevaBis;
@@ -38,20 +37,20 @@ public class CambiarClave extends Fragment {
     private Button bRestablecer;
 
     private String clave;
-    private String correo = "correo@mail.com";
+    private String correo = "heandsheofi@gmail.com";
     private Box box=new Box();
 
     public static CambiarClave newInstance() {return new CambiarClave();}
 
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                                @Nullable final Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             final Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_cambiar_clave, container, false);
 
-        this.contActual = (EditText) view.findViewById(R.id.passActual);
-        this.contNueva = (EditText) view.findViewById(R.id.passNew);
-        this.contNuevaBis = (EditText) view.findViewById(R.id.passNewBis);
-        this.informacion = (TextView) view.findViewById(R.id.infoText);
-        this.aviso = (TextView) view.findViewById(R.id.textViewNueva);
+        contActual = (EditText) view.findViewById(R.id.passActual);
+        contNueva = (EditText) view.findViewById(R.id.passNew);
+        contNuevaBis = (EditText) view.findViewById(R.id.passNewBis);
+        informacion = (TextView) view.findViewById(R.id.infoText);
+        aviso = (TextView) view.findViewById(R.id.textViewNueva);
         contNueva.setVisibility(View.INVISIBLE);
         contNuevaBis.setVisibility(View.INVISIBLE);
         aviso.setVisibility(View.INVISIBLE);
@@ -126,11 +125,6 @@ public class CambiarClave extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        // TODO: Use the ViewModel
-    }
+
 
 }
