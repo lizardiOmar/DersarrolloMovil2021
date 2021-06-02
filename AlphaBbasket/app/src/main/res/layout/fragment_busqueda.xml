@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/layout_orange"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <Spinner
+            android:id="@+id/spinnerCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="@drawable/morado_gradient"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:padding="3sp"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_orange">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <RadioButton
+                    android:id="@+id/radioButtonPrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mejor precio primero"
+                    android:textColor="#FFFFFF"/>
+                <RadioButton
+                    android:id="@+id/radioButtonDistancia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Más cerca primero"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <RadioButton
+                    android:id="@+id/radioButtonMejorOferta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mejor oferta"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
+        </RadioGroup>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMarcas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
