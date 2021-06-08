@@ -24,11 +24,20 @@ CREATE TABLE `cliente_delete` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*TRIGGER PARA ANTES DE BORRAR UN CLIENTE*/
+CREATE TABLE `direccion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `latitud` double NOT NULL,
+  `longitud` double NOT NULL,
+  `altura` double NOT NULL,
+  `correo` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `correo` (`correo`),
+  CONSTRAINT `correo` FOREIGN KEY (`correo`) REFERENCES `cliente` (`CORREO`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 DROP TRIGGER IF EXISTS `bbasket`.`cliente_BEFORE_DELETE`;
 
 DELIMITER $$
-USE `bbasket`$$
-CREATE DEFINER=`root`@`localhost` TRIGGER `bbasket`.`cliente_BEFORE_DELETE`
+CREATE TRIGGER `cliente_BEFORE_DELETE`
 BEFORE DELETE
 ON `cliente` FOR EACH ROW
 BEGIN
@@ -40,13 +49,108 @@ END$$
 DELIMITER ;
 
 /**/
-CREATE TABLE `direccion` (
+
+CREATE TABLE categoria (
+  id INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(45)UNIQUE NOT NULL,
+  descripcion TEXT NOT NULL COMMENT 'Breve descripción relacionada a los productos de esta categoría.',
+  PRIMARY KEY (`id`));
+  
+  CREATE TABLE `marca` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) UNIQUE NOT NULL ,
+  `descripcion` TEXT NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE `producto` (
+  `idproducto` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `tamano` VARCHAR(45) NOT NULL,
+  `idCategoria` INT NOT NULL,
+  `idMarca` INT NOT NULL,
+  PRIMARY KEY (`idproducto`),
+  CONSTRAINT `idCategoria`
+    FOREIGN KEY (`idCategoria`)
+    REFERENCES `categoria` (`id`),
+  CONSTRAINT `idMarca`
+    FOREIGN KEY (`idMarca`)
+    REFERENCES `marca` (`id`));
+	
+	CREATE TABLE `tienda` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `horaApertura` VARCHAR(45) NOT NULL,
+  `horaCierre` VARCHAR(45) NOT NULL,
+  `idCliente` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `idCliente`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `cliente` (`ID`));
+	
+	
+	CREATE TABLE `oferta` (
+  `idOferta` INT NOT NULL AUTO_INCREMENT,
+  `fecha_inicio` VARCHAR(45) NOT NULL,
+  `fecha_fin` VARCHAR(45) NOT NULL,
+  `precio` VARCHAR(45) NOT NULL,
+  `idTienda` INT NOT NULL,
+  `idProducto` INT NOT NULL,
+  PRIMARY KEY (`idOferta`),
+  CONSTRAINT `idTienda`
+    FOREIGN KEY (`idTienda`)
+    REFERENCES `tienda` (`id`),
+  CONSTRAINT `idProdiucto`
+    FOREIGN KEY (`idProducto`)
+    REFERENCES `producto` (`idproducto`));
+CREATE TABLE `consulta` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fecha` VARCHAR(45) NOT NULL,
+  `idCliente` INT NOT NULL,
+  `idOferta` INT NOT NULL,
+  `comentarios` TEXT NULL,
+  `calificacion` INT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `idCliente_c`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `cliente` (`ID`),
+  CONSTRAINT `idOferta_c`
+    FOREIGN KEY (`idOferta`)
+    REFERENCES `oferta` (`idOferta`));
+	
+	CREATE TABLE `direccion_tienda` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `latitud` double NOT NULL,
   `longitud` double NOT NULL,
   `altura` double NOT NULL,
-  `correo` varchar(45) NOT NULL,
+  `idTienda` int UNIQUE NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `correo` (`correo`),
-  CONSTRAINT `correo` FOREIGN KEY (`correo`) REFERENCES `cliente` (`CORREO`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `idTienda_d` FOREIGN KEY (`idTienda`) REFERENCES `tienda` (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE VIEW `all_ofertas` AS
+    SELECT 
+        `oferta`.`idOferta` AS `ID`,
+        `oferta`.`fecha_fin` AS `VIGENCIA`,
+        `oferta`.`precio` AS `PRECIO`,
+        `producto`.`nombre` AS `PRODUCTO`,
+        `producto`.`tamano` AS `SIZE`,
+        `tienda`.`id` AS `ID_TIENDA`,
+        `tienda`.`nombre` AS `TIENDA`,
+        `direccion_tienda`.`latitud` AS `LATITUD`,
+        `direccion_tienda`.`longitud` AS `LONGITUD`,
+        `categoria`.`nombre` AS `CATEGORIA`,
+        `marca`.`nombre` AS `MARCA`
+    FROM
+        (((((`tienda`
+        JOIN `oferta`)
+        JOIN `producto`)
+        JOIN `categoria`)
+        JOIN `marca`)
+        JOIN `direccion_tienda`)
+    WHERE
+        `oferta`.`idTienda` = `tienda`.`id`
+            AND `oferta`.`idProducto` = `producto`.`idproducto`
+            AND `producto`.`idCategoria` = `categoria`.`id`
+            AND `producto`.`idMarca` = `marca`.`id`
+            AND `tienda`.`id` = `direccion_tienda`.`idTienda`;
