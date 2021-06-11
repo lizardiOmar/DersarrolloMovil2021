@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_orange"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewNombreTienda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="5pt"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowRadius="1"
+            android:text="¿Cual es el nombre de la tienda?"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:textIsSelectable="false"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextNombreTienda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:maxLength="30"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F74D4D4E"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textViewHorarioE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="5pt"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowRadius="1"
+            android:text="Hora de apertura"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:textIsSelectable="false"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextHorarioEntrada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:maxLength="30"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F74D4D4E"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/textViewHorarioS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="5pt"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowRadius="1"
+            android:text="Hora de clausura"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:textIsSelectable="false"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextHorarioSalida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:maxLength="30"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#F74D4D4E"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/morado_gradient"
+            android:fontFamily="monospace"
+            android:padding="15sp"
+            android:shadowColor="#512DA8"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="1"
+            android:text="REGISTRAR"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
