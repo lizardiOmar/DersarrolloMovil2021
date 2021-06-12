@@ -23,7 +23,7 @@
 		
 		public static function ofertasCategoria($categoria){
 			$response = null;
-			$sql = "SELECT * FROM all_ofertas where categoria='$categoria';";
+			$sql = "SELECT producto FROM all_ofertas where categoria='$categoria';";
 			try {
 				$conn=new conexion();
 				$stmt = $conn->getConexion()->query($sql);
