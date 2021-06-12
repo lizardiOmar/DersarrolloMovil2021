@@ -24,6 +24,16 @@
             android:padding="3sp"
             android:textSize="25dp"
             android:textStyle="bold"/>
+        <Spinner
+            android:id="@+id/spinnerProductos"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="@drawable/morado_gradient"
+            android:textAlignment="gravity"
+            android:textColor="#FFFFFF"
+            android:padding="3sp"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -63,6 +73,16 @@
             android:id="@+id/recyclerViewMarcas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
+        <TextView
+            android:id="@+id/textViewResultadoBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/morado_gradient"
+            android:fadingEdge="horizontal|vertical"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="5sp"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
