@@ -60,5 +60,24 @@
 				echo json_encode($response);
 			}
 		}
+		public static function ofertasProducto($producto){
+			$response = null;
+			$sql = "SELECT DISTINCT marca FROM all_ofertas where producto='$producto';";
+			try {
+				$conn=new conexion();
+				$stmt = $conn->getConexion()->query($sql);
+				$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+				while ($row = $stmt->fetch()) {
+					$response[] = $row;
+				}
+				echo json_encode($response);
+			} catch (PDOException $e) {
+				$response = array(
+					"estado"=>"FALLIDO",
+					"direccion"=>"NULL"
+				);
+				echo json_encode($response);
+			}
+		}
 	}
 ?>
