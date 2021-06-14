@@ -45,13 +45,17 @@ public class RecyclerViewAdapterMarca extends RecyclerView.Adapter<RecyclerViewA
 
         public ViewHolder(final View itemView) {
             super(itemView);
+            textViewAux=(TextView)itemView.findViewById(R.id.textViewMarca);
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    Log.d(TAG, "Element " +  getTextView() + " clicked.");
+
+                    Log.d(TAG, "Element " +  getAbsoluteAdapterPosition() + " clicked.");
+
+
                 }
             });
-            textViewAux=(TextView)itemView.findViewById(R.id.textViewMarca);
+
         }
         public TextView getTextView() {
             return textViewAux;
