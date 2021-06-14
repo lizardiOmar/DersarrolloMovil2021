@@ -67,10 +67,7 @@ public class BusquedaFragment extends Fragment {
         customAdapterCategorias=new CustomSpinnerAdapter(view.getContext(), categorias);
         spinnerCategoria.setAdapter(customAdapterCategorias);
         recyclerView=(RecyclerView)view.findViewById(R.id.recyclerViewMarcas);
-        recyclerViewAdapterMarca=new RecyclerViewAdapterMarca(mDataset);
-        recyclerView.setAdapter(recyclerViewAdapterMarca);
-        layoutManager=new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(layoutManager);
+
         spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -85,7 +82,7 @@ public class BusquedaFragment extends Fragment {
                                     JSONArray jsonProductos=new JSONArray(response);
                                     int len = jsonProductos.length();
                                     if(len>0){
-                                        String [] productos=new String[len];
+                                        final String [] productos=new String[len];
 
                                         if(len==1){
                                             textViewResultado.setText("Solo hay 1 producto en esta categoría.");
@@ -103,7 +100,51 @@ public class BusquedaFragment extends Fragment {
                                         spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                             @Override
                                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                                String producto=productos[spinnerProductos.getSelectedItemPosition()];
+                                                String uriProductos =  Constantes.ofertas+"/?producto="+producto;
+                                                RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                                                StringRequest stringRequest = new StringRequest(Request.Method.GET, uriProductos,
+                                                        new Response.Listener<String>() {
+                                                            @Override
+                                                            public void onResponse(String response) {
+                                                                try {
+                                                                    JSONArray jsonMarcas=new JSONArray(response);
+                                                                    int len = jsonMarcas.length();
+                                                                    if(len>0){
+                                                                        String [] marcas=new String[len];
 
+                                                                        if(len==1){
+                                                                            textViewResultado.setText("Solo hay 1 marca en esta categoría.");
+                                                                        }else{
+                                                                            textViewResultado.setText("Existen "+len+" marcas dsiponibles.");
+                                                                        }
+                                                                        ArrayList<String> marcasList = new ArrayList<String>();
+                                                                        for(int i=0; i<len;i++){
+                                                                            marcasList.add(jsonMarcas.get(i).toString());
+                                                                            JSONObject jsonProdcuto=new JSONObject(marcasList.get(i));
+                                                                            marcas[i]=jsonProdcuto.getString("MARCA");
+                                                                        }
+                                                                        recyclerViewAdapterMarca=new RecyclerViewAdapterMarca(marcas);
+                                                                        recyclerView.setAdapter(recyclerViewAdapterMarca);
+                                                                        layoutManager=new GridLayoutManager(getActivity(), 3);
+                                                                        recyclerView.setLayoutManager(layoutManager);
+                                                                    }
+
+                                                                } catch (JSONException e) {
+                                                                    spinnerProductos.setAdapter(null);
+                                                                    textViewResultado.setText("No hay marcas en la selección del producto.");
+                                                                }
+
+                                                            }
+                                                        }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        textViewResultado.setText(error.getLocalizedMessage()+" VOLLEY");
+                                                    }
+                                                });
+                                                queue.add(stringRequest);
+
+                                                textViewResultado.setText(uriProductos);
                                             }
 
                                             @Override
