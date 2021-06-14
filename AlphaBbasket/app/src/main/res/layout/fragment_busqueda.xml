@@ -34,6 +34,12 @@
             android:padding="3sp"
             android:textSize="25dp"
             android:textStyle="bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMarcas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,19 +66,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:gravity="center">
-                <RadioButton
-                    android:id="@+id/radioButtonMejorOferta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mejor oferta"
-                    android:textColor="#FFFFFF"/>
-            </LinearLayout>
+                android:gravity="center"/>
         </RadioGroup>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMarcas"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/textViewResultadoBusqueda"
             android:layout_width="match_parent"
