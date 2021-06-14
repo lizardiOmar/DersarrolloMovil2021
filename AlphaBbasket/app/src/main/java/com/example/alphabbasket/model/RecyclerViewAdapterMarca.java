@@ -26,7 +26,7 @@ public class RecyclerViewAdapterMarca extends RecyclerView.Adapter<RecyclerViewA
     public RecyclerViewAdapterMarca.ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_marcas, parent, false);
-
+        //AQUI PON LOS BOTONES y su funcion we y borra este comentario we :V
         return new ViewHolder(v);
     }
 
